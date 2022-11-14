@@ -28,8 +28,7 @@ for i in range(6):
 
 
 
-# read multidimensional array by row and create horizontal cars
-# read md array by column and create vertical cars 
+# read the array and create car objects, setting them up in a list
 
 
 
@@ -38,13 +37,31 @@ cars_list = []
 for i in range(6):
     for j in range(6):
         if input_array[i][j] != ".":
-            for c in Car.carsList:
-                if input_array[i][j] == c.name:
-                    c.set_coord(i,j)
-                else:
-                    Car(input_array[i][j],(i,j),0,100)
+            if len(cars_list) ==0:
+                temp_obj=Car(input_array[i][j],(i,j),0,100)
+                cars_list.append(temp_obj)
+            else:  
+                for c in cars_list:
+                    if input_array[i][j] == c.name:
+                        c.set_coord(i,j)
+                        pass
+                    else:
+                        temp_obj=Car(input_array[i][j],(i,j),0,100)
+                        cars_list.append(temp_obj)
+                        continue
+                        break
+        
+                
+                
+                
 
-print(Car.carsList)
+for k in range(len(cars_list)):
+    print(cars_list[k])
 
 
-# place car on board
+# figure out the orientatiob of each car 
+# once all objects have been set-up, place them on a 2d board
+
+# create a goal board 
+# UCS 
+

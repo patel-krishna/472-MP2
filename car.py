@@ -1,12 +1,12 @@
 class Car(object): 
 
-    carsList = []
+    # carsList = []
     def __init__(self, name, coordinates, position, fuel):
         self.name = name
-        self.coordinates = list(coordinates)
+        self.coordinates = [coordinates]
         self.position = position
         self.fuel = fuel
-        Car.carsList.append(self)
+        # Car.carsList.append(self)
 
     def __str__(self): 
         return f"{self.name}{self.coordinates}"
