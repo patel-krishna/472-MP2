@@ -33,30 +33,46 @@ for i in range(6):
 
 
 cars_list = []
+cars_dict = {}
 
+# for i in range(6):
+#     for j in range(6):
+#         if input_array[i][j] != ".":
+#             if len(cars_list) ==0:
+#                 temp_obj=Car(input_array[i][j],(i,j),0,100)
+#                 cars_list.append(temp_obj)
+#             else:  
+#                 for c in cars_list:
+#                     if input_array[i][j] == c.name:
+#                         c.set_coord(i,j)
+#                         pass
+#                     else:
+#                         temp_obj=Car(input_array[i][j],(i,j),0,100)
+#                         cars_list.append(temp_obj)
+#                         break
+        
 for i in range(6):
     for j in range(6):
         if input_array[i][j] != ".":
-            if len(cars_list) ==0:
+            if len(cars_dict) ==0:
                 temp_obj=Car(input_array[i][j],(i,j),0,100)
-                cars_list.append(temp_obj)
-            else:  
-                for c in cars_list:
-                    if input_array[i][j] == c.name:
-                        c.set_coord(i,j)
-                        pass
-                    else:
-                        temp_obj=Car(input_array[i][j],(i,j),0,100)
-                        cars_list.append(temp_obj)
-                        continue
-                        break
-        
-                
-                
-                
+                cars_dict.update({input_array[i][j]: temp_obj})
+            else:
+                if input_array[i][j] in cars_dict:
+                      x=cars_dict.get(input_array[i][j])
+                      x.set_coord(i,j)
+                else:
+                    temp_obj=Car(input_array[i][j],(i,j),0,100)
+                    cars_dict.update({input_array[i][j]: temp_obj})
 
-for k in range(len(cars_list)):
-    print(cars_list[k])
+                        
+
+                
+for x in cars_dict.values():
+    print(x) 
+
+# for k in range(len(cars_list)):
+#     print(cars_list[k])
 
 
 # figure out the orientatiob of each car 
