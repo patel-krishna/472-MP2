@@ -1,5 +1,5 @@
 from car import Car
-
+from gameboard import Gameboard
 
 # Read input string, for now, 
 # lets work with a string, we can establish io later
@@ -35,6 +35,7 @@ for i in range(6):
 cars_list = []
 cars_dict = {}
 
+
 # for i in range(6):
 #     for j in range(6):
 #         if input_array[i][j] != ".":
@@ -55,21 +56,34 @@ for i in range(6):
     for j in range(6):
         if input_array[i][j] != ".":
             if len(cars_dict) ==0:
-                temp_obj=Car(input_array[i][j],(i,j),0,100)
-                cars_dict.update({input_array[i][j]: temp_obj})
+                if input_array[i][j+1] == input_array[i][j]:
+                    temp_obj=Car(input_array[i][j],(i,j),100, "h")
+                    cars_dict.update({input_array[i][j]: temp_obj})
+                else:
+                    temp_obj=Car(input_array[i][j],(i,j),100, "v")
+                    cars_dict.update({input_array[i][j]: temp_obj})
             else:
                 if input_array[i][j] in cars_dict:
                       x=cars_dict.get(input_array[i][j])
-                      x.set_coord(i,j)
+                      x.update_coord(i,j)
                 else:
-                    temp_obj=Car(input_array[i][j],(i,j),0,100)
-                    cars_dict.update({input_array[i][j]: temp_obj})
+                    if j+1 in range(6):
+                        if input_array[i][j+1] == input_array[i][j]:
+                            temp_obj=Car(input_array[i][j],(i,j),100, "h")
+                            cars_dict.update({input_array[i][j]: temp_obj})
+                        else:
+                            temp_obj=Car(input_array[i][j],(i,j),100, "v")
+                            cars_dict.update({input_array[i][j]: temp_obj})
+                    else:
+                        continue
 
+board = Gameboard(cars_dict,input_array)
                         
 
                 
 for x in cars_dict.values():
-    print(x) 
+    print(x)
+    print(x.orientation)
 
 # for k in range(len(cars_list)):
 #     print(cars_list[k])

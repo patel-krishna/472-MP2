@@ -1,10 +1,13 @@
 class Car(object): 
 
     # carsList = []
+<<<<<<< Updated upstream
     def __init__(self, name, coordinates, position, fuel,orientation):
+=======
+    def __init__(self, name, coordinates, fuel,orientation):
+>>>>>>> Stashed changes
         self.name = name
         self.coordinates = [coordinates]
-        self.position = position
         self.fuel = fuel
         self.orientation = orientation
         # Car.carsList.append(self)
@@ -12,6 +15,7 @@ class Car(object):
     def __str__(self): 
         return f"{self.name}{self.coordinates}"
 
+<<<<<<< Updated upstream
     def set_coord(self,x, y):
         self.coordinates.append((x,y))
 
@@ -26,3 +30,22 @@ class Car(object):
                 print()
             else:
                 print("invalid move")
+=======
+    def update_coord(self,x, y):
+        self.coordinates.append((x,y))
+
+    def adjust_coord(self,direction):
+        if direction=="left":
+            for coord in self.coordinates:
+                coord[1] = coord[1]-1
+        if direction=="right":
+            for coord in self.coordinates:
+                coord[1] = coord[1]+1
+        if direction=="up":
+            for coord in self.coordinates:
+                coord[0] = coord[0]-1
+        if direction=="down":
+            for coord in self.coordinates:
+                coord[0] = coord[0]+1
+
+>>>>>>> Stashed changes
