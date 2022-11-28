@@ -36,6 +36,7 @@ cars_list = []
 cars_dict = {}
 
 
+
 # for i in range(6):
 #     for j in range(6):
 #         if input_array[i][j] != ".":
@@ -77,14 +78,17 @@ for i in range(6):
                     else:
                         continue
 
-board = Gameboard(cars_dict,input_array)
-                        
 
+carFuel = {}
+carOrientation ={}
                 
 for x in cars_dict.values():
-    print(x)
-    print(x.orientation)
+    carFuel[x.name] = x.fuel
+    carOrientation[x.name] = x.orientation
 
+
+
+board = Gameboard(carFuel,carOrientation,input_array)
 # for k in range(len(cars_list)):
 #     print(cars_list[k])
 

@@ -26,6 +26,13 @@ class Gameboard(object):
                             endCoord = [i,tempj-1]
                 row = startCoord[0]
                 column = startCoord[1]
+                #check if at exit
+                carPosition = self.carAtExit(startCoord,endCoord)
+                if carPosition:
+                    if self.state[i][j]=="A":
+                    #remove car and end game
+                    else:
+                    #remove car
                 #check left
                 if c.values() >0:
                     if column -1 in range(6):
@@ -89,3 +96,10 @@ class Gameboard(object):
                             self.children = newBoard
                         else:
                             continue
+    def carAtExit(self,start,end):
+        if(start[0]==3 and start[1]==5):
+            return True
+        elif(end[0]==1 and end[1]==5):
+            return True
+        else:
+            return False
