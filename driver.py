@@ -83,12 +83,12 @@ carFuel = {}
 carOrientation ={}
                 
 for x in cars_dict.values():
-    carFuel[x.name] = x.fuel
+    carFuel[x.name] = 10
     carOrientation[x.name] = x.orientation
 
 
 board = Gameboard(carFuel,carOrientation,input_array)
-board.move()
+board.createGraph()
 # for k in range(len(cars_list)):
 #     print(cars_list[k])
 
