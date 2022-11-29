@@ -87,8 +87,8 @@ for x in cars_dict.values():
     carOrientation[x.name] = x.orientation
 
 
-
 board = Gameboard(carFuel,carOrientation,input_array)
+board.move()
 # for k in range(len(cars_list)):
 #     print(cars_list[k])
 
