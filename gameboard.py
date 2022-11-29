@@ -135,9 +135,9 @@ class Gameboard(object):
             return "no solution"
 
     def carAtExit(self,start,end):
-        if start[0]==3 and start[1]==5:
+        if start[0]==2 and start[1]==5:
             return True
-        elif end[0]==3 and end[1]==5 :
+        elif end[0]==2 and end[1]==5 :
             return True
         else:
             return False
