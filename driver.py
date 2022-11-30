@@ -83,7 +83,7 @@ carFuel = {}
 carOrientation ={}
                 
 for x in cars_dict.values():
-    carFuel[x.name] = 10
+    carFuel[x.name] = x.fuel
     carOrientation[x.name] = x.orientation
 
 
