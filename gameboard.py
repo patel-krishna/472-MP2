@@ -4,22 +4,32 @@
 #TODO: Add nodes for each move possible (one for each empty space)
 #TODO: figure out why only H is moving
 from copy import deepcopy
+from sys import exit
+from queue import PriorityQueue
 
 
 class Gameboard(object):
-    def __init__(self, carFuel, carOrientation, state):
+    def __init__(self, carFuel, carOrientation, state, visited=None):
+        if visited is None:
+            visited = []
         self.carFuel = carFuel
         self.carOrientation = carOrientation
         self.children = []
         self.state = state
+        self.visited = visited
 
     def createGraph(self):
+        print("Current Board:")
+        for i in range(6):
+            for j in range(6):
+                print(self.state[i][j], end=" ")
+            print("")
+        if self.state[2][5]=="A":
+            print("Win")
+            return
+            #exit("Win")
         if self.checkFuel():
-            print("Current Board:")
-            for i in range(6):
-                for j in range(6):
-                    print(self.state[i][j], end=" ")
-                print("")
+
             for c in self.carFuel:
                 if self.carOrientation.get(c) == "h":
                     print("CHECKING ALL POSSIBLE MOVES FOR CURRENT CAR " + c)
@@ -76,13 +86,19 @@ class Gameboard(object):
         for a in self.children:
             a.board.createGraph()
 
-    def carAtExit(self,start,end):
-        if start[0]==2 and start[1]==5:
+    def carAtExit(self,coords):
+        if coords[0][0]==2 and coords[0][1]==5:
             return True
-        elif end[0]==2 and end[1]==5 :
+        elif coords[0][0]==2 and coords[0][1]==5 :
             return True
         else:
             return False
+
+    def checkVisited(self, newstate):
+        for v in self.visited:
+            if newstate == v:
+                return True
+        return False
 
     def removeCar(self,car):
         print("Car erased:")
@@ -102,14 +118,13 @@ class Gameboard(object):
             newState[i[0]][i[1]]= "."
             newState[i[0]-increment][i[1]] = c
         self.carFuel[c] = self.carFuel.get(c) -1
-        newBoard = Gameboard(self.carFuel,self.carOrientation, newState)
-        self.add_child(newBoard)
-        #TESTING: prints out newBoard(child) with updated move
-        for i in range(6):
-            for j in range(6):
-                print(newState[i][j], end=" ")
-            print(" ")
-        print("END")
+        if self.checkVisited(newState):
+            return None
+        else:
+            self.visited.append(newState)
+            newBoard = Gameboard(self.carFuel,self.carOrientation, newState, self.visited)
+            self.add_child(newBoard)
+
 
     def moveCarDown(self,c,coords,increment):
         newState = deepcopy(self.state)
@@ -117,13 +132,13 @@ class Gameboard(object):
             newState[i[0]][i[1]]= "."
             newState[i[0]+increment][i[1]] = c
         self.carFuel[c] = self.carFuel.get(c) -1
-        newBoard = Gameboard(self.carFuel,self.carOrientation, newState)
-        self.add_child(newBoard)
-        #TESTING: prints out newboard(child) with updated move
-        for i in range(6):
-            for j in range(6):
-                print(newState[i][j], end=" ")
-        print("END")
+        if self.checkVisited(newState):
+            return None
+        else:
+            self.visited.append(newState)
+            newBoard = Gameboard(self.carFuel,self.carOrientation, newState,self.visited)
+            self.add_child(newBoard)
+
 
     def moveCarLeft(self, c, coords, increment):
         print("MOVING Left")
@@ -150,8 +165,13 @@ class Gameboard(object):
                         break
                 self.removeCar(towCar)
         """
-        newBoard = Gameboard(self.carFuel,self.carOrientation, newState)
-        self.add_child(newBoard)
+        if self.checkVisited(newState):
+            return None
+        else:
+            self.visited.append(newState)
+            newBoard = Gameboard(self.carFuel,self.carOrientation, newState,self.visited)
+            self.add_child(newBoard)
+
 
     def moveCarRight(self,c,coords, increment):
         print("MOVING RIGHT")
@@ -160,11 +180,10 @@ class Gameboard(object):
             newState[i[0]][i[1]] = "."
             newState[i[0]][i[1]+increment] = c
         self.carFuel[c] = self.carFuel.get(c) -1
-        """
-        carPosition = self.carAtExit(startCoord,endCoord)
+        carPosition = self.carAtExit(coords)
         if carPosition:
             if newState[2][5]=="A":
-                return "win"
+                return "WIN"
             else:
                 x = 2
                 y=5
@@ -176,15 +195,13 @@ class Gameboard(object):
                     else:
                         break
                 self.removeCar(towCar)
-            """
-        newBoard = Gameboard(self.carFuel,self.carOrientation, newState)
-        self.add_child(newBoard)
-        #TESTING: prints out newBoard(child) with updated move
-        for i in range(6):
-            for j in range(6):
-                print(newState[i][j], end=" ")
-            print("")
-        print("END")
+        if self.checkVisited(newState):
+            return None
+        else:
+            self.visited.append(newState)
+            newBoard = Gameboard(self.carFuel,self.carOrientation, newState, self.visited)
+            self.add_child(newBoard)
+
 
     def getHorizontalCoordinates(self,c):
         coords = []
@@ -219,6 +236,9 @@ class Gameboard(object):
     def add_child(self, newBoard, cost=1):
         child = Child(self, newBoard, cost)
         self.children.append(child)
+    
+
+
 
 class Child(object):
 
