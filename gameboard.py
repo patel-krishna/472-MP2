@@ -7,11 +7,14 @@ from copy import deepcopy
 
 
 class Gameboard(object):
-    def __init__(self, carFuel, carOrientation, state):
+    def __init__(self, carFuel, carOrientation, state, visited=None):
+        if visited is None:
+            visited = []
         self.carFuel = carFuel
         self.carOrientation = carOrientation
         self.children = []
         self.state = state
+        self.visited = visited
 
     def createGraph(self):
         if self.checkFuel():
@@ -84,6 +87,12 @@ class Gameboard(object):
         else:
             return False
 
+    def checkVisited(self, newstate):
+        for v in self.visited:
+            if newstate == v:
+                return True
+        return False
+
     def removeCar(self,car):
         print("Car erased:")
         print(car)
@@ -102,14 +111,13 @@ class Gameboard(object):
             newState[i[0]][i[1]]= "."
             newState[i[0]-increment][i[1]] = c
         self.carFuel[c] = self.carFuel.get(c) -1
-        newBoard = Gameboard(self.carFuel,self.carOrientation, newState)
-        self.add_child(newBoard)
-        #TESTING: prints out newBoard(child) with updated move
-        for i in range(6):
-            for j in range(6):
-                print(newState[i][j], end=" ")
-            print(" ")
-        print("END")
+        if self.checkVisited(newState):
+            return None
+        else:
+            self.visited.append(newState)
+            newBoard = Gameboard(self.carFuel,self.carOrientation, newState, self.visited)
+            self.add_child(newBoard)
+
 
     def moveCarDown(self,c,coords,increment):
         newState = deepcopy(self.state)
@@ -117,13 +125,13 @@ class Gameboard(object):
             newState[i[0]][i[1]]= "."
             newState[i[0]+increment][i[1]] = c
         self.carFuel[c] = self.carFuel.get(c) -1
-        newBoard = Gameboard(self.carFuel,self.carOrientation, newState)
-        self.add_child(newBoard)
-        #TESTING: prints out newboard(child) with updated move
-        for i in range(6):
-            for j in range(6):
-                print(newState[i][j], end=" ")
-        print("END")
+        if self.checkVisited(newState):
+            return None
+        else:
+            self.visited.append(newState)
+            newBoard = Gameboard(self.carFuel,self.carOrientation, newState,self.visited)
+            self.add_child(newBoard)
+
 
     def moveCarLeft(self, c, coords, increment):
         print("MOVING Left")
@@ -150,8 +158,13 @@ class Gameboard(object):
                         break
                 self.removeCar(towCar)
         """
-        newBoard = Gameboard(self.carFuel,self.carOrientation, newState)
-        self.add_child(newBoard)
+        if self.checkVisited(newState):
+            return None
+        else:
+            self.visited.append(newState)
+            newBoard = Gameboard(self.carFuel,self.carOrientation, newState,self.visited)
+            self.add_child(newBoard)
+
 
     def moveCarRight(self,c,coords, increment):
         print("MOVING RIGHT")
@@ -177,14 +190,13 @@ class Gameboard(object):
                         break
                 self.removeCar(towCar)
             """
-        newBoard = Gameboard(self.carFuel,self.carOrientation, newState)
-        self.add_child(newBoard)
-        #TESTING: prints out newBoard(child) with updated move
-        for i in range(6):
-            for j in range(6):
-                print(newState[i][j], end=" ")
-            print("")
-        print("END")
+        if self.checkVisited(newState):
+            return None
+        else:
+            self.visited.append(newState)
+            newBoard = Gameboard(self.carFuel,self.carOrientation, newState, self.visited)
+            self.add_child(newBoard)
+
 
     def getHorizontalCoordinates(self,c):
         coords = []
@@ -219,6 +231,9 @@ class Gameboard(object):
     def add_child(self, newBoard, cost=1):
         child = Child(self, newBoard, cost)
         self.children.append(child)
+    
+
+
 
 class Child(object):
 
