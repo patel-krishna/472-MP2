@@ -3,8 +3,9 @@ from gameboard import Gameboard
 
 # Read input string, for now, 
 # lets work with a string, we can establish io later
-input = "..I...BBI.K.GHAAKLGHDDKLG..JEEFF.J.."
-
+#input = "..I...BBI.K.GHAAKLGHDDKLG..JEEFF.J.."
+#input = "BBIJ....IJCC..IAAMGDDK.MGH.KL.GHFFL."
+input = "...............AA..................."
 if len(input)>36 or len(input)<36:
     print('Input is wrong')
 else:
@@ -76,7 +77,8 @@ for i in range(6):
                             temp_obj=Car(input_array[i][j],(i,j),100, "v")
                             cars_dict.update({input_array[i][j]: temp_obj})
                     else:
-                        continue
+                        temp_obj=Car(input_array[i][j],(i,j),100, "v")
+                        cars_dict.update({input_array[i][j]: temp_obj})
 
 
 carFuel = {}
@@ -98,4 +100,3 @@ board.createGraph()
 
 # create a goal board 
 # UCS 
-
