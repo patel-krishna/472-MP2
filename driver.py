@@ -1,3 +1,4 @@
+from queue import PriorityQueue
 from car import Car
 from gameboard import Gameboard
 import re
@@ -5,25 +6,31 @@ import re
 # Helper methods 
 
 def parsePuzzle(input):
-    """ check that the string is exactly of 36 characters
-        and there is an ambulance """
-    if ("A" not in input):
-        print('Puzzle is not valid')
-        return
-    else:
-# the string is valid so take the puzzle and place it on a a 2D array
+    if ("A" in input):
+        # the string is valid so take the puzzle and place it on a a 2D array
         array = []
         counter = 0
         while counter <36:
             temp_columns =[]
-        for i in range(6):
-            temp_columns.append(input[counter])
-            counter=counter+1
-        array.append(temp_columns)
-    return array
+            for i in range(6):
+                temp_columns.append(input[counter])
+                counter=counter+1
+            array.append(temp_columns)
+        return array
+    else:
+        print("Puzzle is not valid, missing Ambulance")
+        return
 
-# given the puzzle, set the fuel dictionnary 
-def setFuel(input):
+def printBoard(array):
+
+    for i in range(6):
+        for j in range(6):
+            print(array[i][j], end=" ")
+        print("")
+
+
+# given the puzzle string, set the fuel dictionnary 
+def createFuelDict(input):
     carFuel = {}
     tempCar= re.sub('[^a-zA-Z]+', '', input)
     carName = list(set(tempCar))
@@ -85,100 +92,57 @@ def createOrientationDict(cars_dict):
     return carOrientation
 
 
+# SEARCH ALGORITHMS 
+
+def ucs(root): 
+    queue = PriorityQueue()
+    queue.put((0, [root]))
+    # iterate over the items in the queue
+    while not queue.empty():
+        # get the highest priority item
+        pair = queue.get()
+        current = pair[1][-1]
+        # if it's the goal, return
+        if current.state[3][5] == 'A':
+            return pair[1]
+        # add all the edges to the priority queue
+        for edge in current.children:
+            # create a new path with the node from the edge
+            new_path = list(pair[1])
+            new_path.append(edge.destination)
+            # append the new path to the queue with the edges priority
+            queue.put((pair[0] + edge.cost, new_path))
+
+def bfs(root):
+    return 
+
 # Read input string, for now, 
 # lets work with a string, we can establish io later
+
 #input = "..I...BBI.K.GHAAKLGHDDKLG..JEEFF.J.."
-#input = "BBIJ....IJCC..IAAMGDDK.MGH.KL.GHFFL."
-input = "...............AA..................."
-if len(input)>36 or len(input)<36:
-    print('Input is wrong')
-else:
-    print("Input is valid")
+# input = "BBIJ....IJCC..IAAMGDDK.MGH.KL.GHFFL."
+# input = "...............AA..................."
+input = "IJBBCCIJDDL.IJAAL.EEK.L...KFF..GGHH. F0 G6"
 
 # place input string in multidim array (6x6)
-input_array = []
-
-counter =0
-while counter <36:
-    temp_columns =[]
-    for i in range(6): 
-        temp_columns.append(input[counter])
-        counter=counter+1
-    input_array.append(temp_columns)
-
-for i in range(6):
-    for j in range(6):
-        print(input_array[i][j], end=" ")
-    print("")
-
+input_array = parsePuzzle(input)
+printBoard(input_array)
 
 
 # read the array and create car objects, setting them up in a list
+cars_dict = createCars(input_array)
+
+# create dictionnaries for root board
+carFuel = createFuelDict(input)
+carOrientation =createOrientationDict(cars_dict)
+print(carFuel)
+print(carOrientation)
 
 
-
-cars_list = []
-cars_dict = {}
-
-
-
-# for i in range(6):
-#     for j in range(6):
-#         if input_array[i][j] != ".":
-#             if len(cars_list) ==0:
-#                 temp_obj=Car(input_array[i][j],(i,j),0,100)
-#                 cars_list.append(temp_obj)
-#             else:  
-#                 for c in cars_list:
-#                     if input_array[i][j] == c.name:
-#                         c.set_coord(i,j)
-#                         pass
-#                     else:
-#                         temp_obj=Car(input_array[i][j],(i,j),0,100)
-#                         cars_list.append(temp_obj)
-#                         break
-        
-for i in range(6):
-    for j in range(6):
-        if input_array[i][j] != ".":
-            if len(cars_dict) ==0:
-                if input_array[i][j+1] == input_array[i][j]:
-                    temp_obj=Car(input_array[i][j],(i,j),100, "h")
-                    cars_dict.update({input_array[i][j]: temp_obj})
-                else:
-                    temp_obj=Car(input_array[i][j],(i,j),100, "v")
-                    cars_dict.update({input_array[i][j]: temp_obj})
-            else:
-                if input_array[i][j] in cars_dict:
-                      x=cars_dict.get(input_array[i][j])
-                      x.update_coord(i,j)
-                else:
-                    if j+1 in range(6):
-                        if input_array[i][j+1] == input_array[i][j]:
-                            temp_obj=Car(input_array[i][j],(i,j),100, "h")
-                            cars_dict.update({input_array[i][j]: temp_obj})
-                        else:
-                            temp_obj=Car(input_array[i][j],(i,j),100, "v")
-                            cars_dict.update({input_array[i][j]: temp_obj})
-                    else:
-                        temp_obj=Car(input_array[i][j],(i,j),100, "v")
-                        cars_dict.update({input_array[i][j]: temp_obj})
-
-
-carFuel = {}
-carOrientation ={}
-                
-for x in cars_dict.values():
-    carFuel[x.name] = x.fuel
-    carOrientation[x.name] = x.orientation
-
-
-# board = Gameboard(carFuel,carOrientation,input_array)
-# board.createGraph()
+board = Gameboard(carFuel,carOrientation,input_array)
+board.createGraph()
 # for k in range(len(cars_list)):
 #     print(cars_list[k])
 
-string = "IJBBCCIJDDL.IJAAL.EEK.L...KFF..GGHH. F0 G6"
-carFuelTest2  = setFuel(string)
+# string = "IJBBCCIJDDL.IJAAL.EEK.L...KFF..GGHH. F0 G6"
 
-print(carFuelTest2)
