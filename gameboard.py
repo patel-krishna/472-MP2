@@ -131,6 +131,7 @@ class Gameboard(object):
         self.carFuel[c] = self.carFuel.get(c) -1
         #check if at exit
         carPosition = self.carAtExit(startCoord,endCoord)
+        """
         if carPosition:
             if newState[2][5]=="A":
                 return "win"
