@@ -87,8 +87,9 @@ def createOrientationDict(cars_dict):
 
 # Read input string, for now, 
 # lets work with a string, we can establish io later
-input = "..I...BBI.K.GHAAKLGHDDKLG..JEEFF.J.."
-
+#input = "..I...BBI.K.GHAAKLGHDDKLG..JEEFF.J.."
+#input = "BBIJ....IJCC..IAAMGDDK.MGH.KL.GHFFL."
+input = "...............AA..................."
 if len(input)>36 or len(input)<36:
     print('Input is wrong')
 else:
@@ -160,14 +161,15 @@ for i in range(6):
                             temp_obj=Car(input_array[i][j],(i,j),100, "v")
                             cars_dict.update({input_array[i][j]: temp_obj})
                     else:
-                        continue
+                        temp_obj=Car(input_array[i][j],(i,j),100, "v")
+                        cars_dict.update({input_array[i][j]: temp_obj})
 
 
 carFuel = {}
 carOrientation ={}
                 
 for x in cars_dict.values():
-    carFuel[x.name] = 10
+    carFuel[x.name] = x.fuel
     carOrientation[x.name] = x.orientation
 
 
@@ -180,6 +182,3 @@ string = "IJBBCCIJDDL.IJAAL.EEK.L...KFF..GGHH. F0 G6"
 carFuelTest2  = setFuel(string)
 
 print(carFuelTest2)
-
-
-
