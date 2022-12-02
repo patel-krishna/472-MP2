@@ -2,6 +2,7 @@ from queue import PriorityQueue
 from car import Car
 from gameboard import Gameboard
 import re
+import heapq
 
 # Helper methods 
 
@@ -94,7 +95,7 @@ def createOrientationDict(cars_dict):
     return carOrientation
 
 
-# SEARCH ALGORITHMS 
+# ================SEARCH ALGORITHMS======================= 
 
 def ucs(root): 
     queue = PriorityQueue()
@@ -143,7 +144,7 @@ def bfs(root):
         bfs_traversal.append(current_node)
 
         # if the current board is in a winning state, then return the bfs traversale
-        if current_node.state[2][5] == "A":
+        if current_node.state[2][5] == "A" and current_node.state[2][4] == "A" :
             return bfs_traversal
         # else, check the children of that node 
         else: 
@@ -154,8 +155,24 @@ def bfs(root):
                     visited.add(children.board)
                     queue.append(children.board)
 
+# Dijkstra's algorithm 
+def shortestPath(root):
+    h = []
+
+    heapq.heappush(h, (0, root))
+    path = []
+    while len(h) !=0:
+        current_cost, current_node = heapq.heappop(h)
+        path.append(current_node)
+        if current_node.state[2][5] == "A" and current_node.state[2][4] == "A":
+             return path
+        else:
+             for children in current_node.children:
+                heapq.heappush(h, (current_cost+children.cost, children.board))
+
 
 # -------------------------------------------------------------------------MAIN
+
 
 # Read input string, for now, 
 # lets work with a string, we can establish io later
@@ -184,7 +201,6 @@ print(carOrientation)
 
 board = Gameboard(carFuel,carOrientation,input_array)
 board.createGraph()
-print(len(board.children))
 # for k in range(len(cars_list)):
 #     print(cars_list[k])
 
@@ -195,7 +211,8 @@ print(len(board.children))
 
 print("------------------")
 
-answer = bfs(board)
+print(len(board.children))
+answer = shortestPath(board)
 print(len(answer))
 
 print("--------")
