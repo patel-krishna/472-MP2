@@ -168,7 +168,7 @@ class Gameboard(object):
             return None
         else:
             visited_boards.append(newState)
-            newBoard = Gameboard(self.carFuel,self.carOrientation, newState,self.visited)
+            newBoard = Gameboard(self.carFuel,self.carOrientation, newState)
             self.add_child(newBoard)
 
 
