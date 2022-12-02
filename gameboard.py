@@ -37,27 +37,29 @@ class Gameboard(object):
                 if self.carOrientation.get(c) == "h":
                     print("CHECKING ALL POSSIBLE MOVES FOR CURRENT CAR " + c)
                     hcoords = self.getHorizontalCoordinates(c)
-                    startCoord = hcoords[0]
-                    endCoord = hcoords[-1]
-                    row = startCoord[0]
-                    column = startCoord[1]
-                    #check left
-                    if self.carFuel.get(c)>0:
-                        count = 1
-                        while column-1 in range(6) and self.state[row][column-1] == ".":
-                            self.moveCarLeft(c,hcoords,count)
-                            column-=1
-                            count+=1
+                    if len(hcoords) >0:
+                        startCoord = hcoords[0]
+                        endCoord = hcoords[-1]
+                        row = startCoord[0]
+                        column = startCoord[1]
+                        #check left
+                        if self.carFuel.get(c)>0:
+                            count = 1
+                            while column-1 in range(6) and self.state[row][column-1] == ".":
+                                self.moveCarLeft(c,hcoords,count)
+                                column-=1
+                                count+=1
 
-                    row = endCoord[0]
-                    column = endCoord[1]
-                    #check right
-                    if self.carFuel.get(c)>0:
-                        count=1
-                        while column+1 in range(6) and self.state[row][column+1] == ".":
-                            self.moveCarRight(c,hcoords,count)
-                            column+=1
-                            count+=1
+                        row = endCoord[0]
+                        column = endCoord[1]
+                        #check right
+                        if self.carFuel.get(c) != None:
+                            if self.carFuel.get(c)>0:
+                                count=1
+                                while column+1 in range(6) and self.state[row][column+1] == ".":
+                                    self.moveCarRight(c,hcoords,count)
+                                    column+=1
+                                    count+=1
 
                 elif self.carOrientation.get(c) == "v":
                     print("CHECKING ALL POSSIBLE MOVES FOR CURRENT CAR " + c)
@@ -89,14 +91,13 @@ class Gameboard(object):
             if win:
                 return True
 
-    def carAtExit(self,start,end):
-        if start[0]==2 and start[1]==5:
-
-            return True
-        elif end[0]==2 and end[1]==5 :
-            return True
-        else:
-            return False
+    def carAtExit(self,coords):
+        print(coords)
+        for c in coords:
+            if c[0]==2 and c[1]==5:
+                print("Car at exit")
+                return True
+        return False
 
     def checkVisited(self, newstate):
         for v in visited_boards:
@@ -107,7 +108,7 @@ class Gameboard(object):
     def removeCar(self,car):
         print("Car erased:")
         print(car)
-        self.carFuel.pop(car)
+        #self.carFuel.pop(car)
 
     def checkFuel(self):
         fuelLeft = False
@@ -144,28 +145,29 @@ class Gameboard(object):
 
     def moveCarLeft(self, c, coords, increment):
         newState = deepcopy(self.state)
-        for i in coords:
-            newState[i[0]][i[1]] = "."
-            newState[i[0]][i[1]-increment] = c
-        self.carFuel[c] = self.carFuel.get(c) -1
-        #check if at exit
-        #carPosition = self.carAtExit(startCoord,endCoord)
-        """
+        carPosition = self.carAtExit(coords)
         if carPosition:
-            if newState[2][5]=="A":
-                return "win"
-            else:
-                x = 2
-                y=5
-                towCar = newState[x][y]
-                while newState[x][y] ==towCar:
+            x=2
+            y=5
+            towCar = newState[x][y]
+            print("CAR TO TOW")
+            print(towCar)
+            if towCar != "A":
+                while newState[x][y] == towCar:
+                    print("towing" + towCar)
+                    print(newState[x][y])
                     newState[x][y] = "."
                     if y-1 in range(6):
                         y-= 1
                     else:
                         break
                 self.removeCar(towCar)
-        """
+        else:
+            for i in coords:
+                newState[i[0]][i[1]] = "."
+                newState[i[0]][i[1]-increment] = c
+            self.carFuel[c] = self.carFuel.get(c) -1
+
         if self.checkVisited(newState):
             return None
         else:
@@ -180,21 +182,21 @@ class Gameboard(object):
             newState[i[0]][i[1]] = "."
             newState[i[0]][i[1]+increment] = c
         self.carFuel[c] = self.carFuel.get(c) -1
-        # carPosition = self.carAtExit(startCoord,endCoord)
-        # if carPosition:
-        #     if newState[2][5]=="A":
-        #         return "win"
-        #     else:
-        #         x = 2
-        #         y=5
-        #         towCar = newState[x][y]
-        #         while newState[x][y] ==towCar:
-        #             newState[x][y] = "."
-        #             if y-1 in range(6):
-        #                 y-= 1
-        #             else:
-        #                 break
-        #         self.removeCar(towCar)
+        carPosition = self.carAtExit(coords)
+        if carPosition:
+            x=2
+            y=5
+            towCar = newState[x][y]
+            print("Car to TOW:" + towCar)
+            # if towCar != "A":
+            #     while newState[x][y] == towCar:
+            #         print("towing" + towCar)
+            #         newState[x][y] = "."
+            #         if y-1 in range(6):
+            #             y-= 1
+            #         else:
+            #             break
+            #     self.removeCar(towCar)
         if self.checkVisited(newState):
             return None
         else:
