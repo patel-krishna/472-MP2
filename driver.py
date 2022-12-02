@@ -162,9 +162,11 @@ def bfs(root):
 
 
 #input = "..I...BBI.K.GHAAKLGHDDKLG..JEEFF.J.."
-# input = "BBIJ....IJCC..IAAMGDDK.MGH.KL.GHFFL."
-input = "...............AA..................."
-# input = "IJBBCCIJDDL.IJAAL.EEK.L...KFF..GGHH. F0 G6"
+#input = "BBIJ....IJCC..IAAMGDDK.MGH.KL.GHFFL."
+#input = "...............AA..................."
+input = "..............AABB.................."
+#input = "IJBBCCIJDDL.IJAAL.EEK.L...KFF..GGHH. F0 G6"
+
 
 
 # place input string in multidim array (6x6)
