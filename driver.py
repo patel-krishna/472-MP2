@@ -75,8 +75,9 @@ def createCars(array):
                                 temp_obj=Car(array[i][j],(i,j),100, "v")
                                 cars_dict.update({array[i][j]: temp_obj})
                         else:
-                            temp_obj=Car(array[i][j],(i,j),100, "v")
+                            temp_obj=Car(array[i][j], (i,j), 100, "v")
                             cars_dict.update({array[i][j]: temp_obj})
+                            continue
     return cars_dict
 
 # def createFuelDict(cars_dict):
@@ -102,20 +103,59 @@ def ucs(root):
     while not queue.empty():
         # get the highest priority item
         pair = queue.get()
+        print("pair " + str(pair))
         current = pair[1][-1]
+        print("current")
+        print(current) 
         # if it's the goal, return
-        if current.state[3][5] == 'A':
+        if current.state[2][5] == 'A':
+            printBoard(pair[1])
             return pair[1]
         # add all the edges to the priority queue
         for edge in current.children:
             # create a new path with the node from the edge
-            new_path = list(pair[1])
-            new_path.append(edge.destination)
+            new_path = list(pair[1].state)
+            print(pair[1])
+            new_path.append(edge.board)
+            printBoard(edge.board.state)
             # append the new path to the queue with the edges priority
+            print(pair[0])
+            print(edge.cost)
             queue.put((pair[0] + edge.cost, new_path))
 
 def bfs(root):
-    return 
+
+    # track of visited nodes
+    visited = set()  
+    # BFS traversal result
+    bfs_traversal = list()
+    # queue
+    queue = list()
+
+    # push the root node to the queue and mark it as visited 
+    queue.append(root)
+    visited.add(root)
+
+    # loop until queue empty 
+    while queue: 
+        # take the first board from the queue and add it to the traversal list
+        current_node = queue.pop(0)
+        bfs_traversal.append(current_node)
+
+        # if the current board is in a winning state, then return the bfs traversale
+        if current_node.state[2][5] == "A":
+            return bfs_traversal
+        # else, check the children of that node 
+        else: 
+            for children in current_node.children:
+                # if the children node havent been visited yet
+                # push them onto the queue and mark them as visited 
+                if children.board not in visited:
+                    visited.add(children.board)
+                    queue.append(children.board)
+
+
+# -------------------------------------------------------------------------MAIN
 
 # Read input string, for now, 
 # lets work with a string, we can establish io later
@@ -126,6 +166,7 @@ def bfs(root):
 #input = "...............AA..................."
 input = "..............AABB.................."
 #input = "IJBBCCIJDDL.IJAAL.EEK.L...KFF..GGHH. F0 G6"
+
 
 
 # place input string in multidim array (6x6)
@@ -145,8 +186,24 @@ print(carOrientation)
 
 board = Gameboard(carFuel,carOrientation,input_array)
 board.createGraph()
+print(len(board.children))
 # for k in range(len(cars_list)):
 #     print(cars_list[k])
 
+
+
+# TESTING SEARCH ALGOS
 # string = "IJBBCCIJDDL.IJAAL.EEK.L...KFF..GGHH. F0 G6"
+
+print("------------------")
+
+answer = bfs(board)
+print(len(answer))
+
+print("--------")
+
+for i in answer: 
+    printBoard(i.state)
+    print(" ")
+
 
