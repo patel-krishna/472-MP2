@@ -4,8 +4,8 @@ from gameboard import Gameboard
 # Read input string, for now, 
 # lets work with a string, we can establish io later
 #input = "..I...BBI.K.GHAAKLGHDDKLG..JEEFF.J.."
-#input = "BBIJ....IJCC..IAAMGDDK.MGH.KL.GHFFL."
-input = "...............AA..................."
+input = "BBIJ....IJCC..IAAMGDDK.MGH.KL.GHFFL."
+#input = "...............AA..................."
 if len(input)>36 or len(input)<36:
     print('Input is wrong')
 else:
