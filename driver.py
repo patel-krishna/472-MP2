@@ -75,7 +75,8 @@ def createCars(array):
                                 temp_obj=Car(array[i][j],(i,j),100, "v")
                                 cars_dict.update({array[i][j]: temp_obj})
                         else:
-                            continue
+                            temp_obj=Car(array[i][j],(i,j),100, "v")
+                            cars_dict.update({array[i][j]: temp_obj})
     return cars_dict
 
 # def createFuelDict(cars_dict):
@@ -121,9 +122,9 @@ def bfs(root):
 
 
 #input = "..I...BBI.K.GHAAKLGHDDKLG..JEEFF.J.."
-# input = "BBIJ....IJCC..IAAMGDDK.MGH.KL.GHFFL."
-# input = "...............AA..................."
-input = "IJBBCCIJDDL.IJAAL.EEK.L...KFF..GGHH. F0 G6"
+input = "BBIJ....IJCC..IAAMGDDK.MGH.KL.GHFFL."
+#input = "...............AA..................."
+#input = "IJBBCCIJDDL.IJAAL.EEK.L...KFF..GGHH. F0 G6"
 
 
 # place input string in multidim array (6x6)
