@@ -27,6 +27,7 @@ class Gameboard(object):
             print("Win")
             return True
             #exit("Win")
+        moved = False
         if self.checkFuel():
             print("Current Board:")
             for i in range(6):
@@ -47,6 +48,7 @@ class Gameboard(object):
                             count = 1
                             while column-1 in range(6) and self.state[row][column-1] == ".":
                                 self.moveCarLeft(c,hcoords,count)
+                                moved = True
                                 column-=1
                                 count+=1
 
@@ -58,6 +60,7 @@ class Gameboard(object):
                                 count=1
                                 while column+1 in range(6) and self.state[row][column+1] == ".":
                                     self.moveCarRight(c,hcoords,count)
+                                    moved = True
                                     column+=1
                                     count+=1
 
@@ -73,6 +76,7 @@ class Gameboard(object):
                         count=1
                         while row-1 in range(6) and self.state[row-1][column]==".":
                             self.moveCarUp(c, vcoords, count)
+                            moved=True
                             row -= 1
                             count+=1
                         row = endCoord[0]
@@ -82,17 +86,22 @@ class Gameboard(object):
                         count = 1
                         while row+1 in range(6) and self.state[row+1][column] == ".":
                             self.moveCarDown(c,vcoords, count)
+                            moved = True
                             row+=1
                             count+=1
+                if not moved:
+                    print("no solution")
+                    return False
         else:
             return "no solution"
         for a in self.children:
             win = a.board.createGraph()
             if win:
                 return True
+            if not win:
+                return False
 
     def carAtExit(self,coords):
-        print(coords)
         for c in coords:
             if c[0]==2 and c[1]==5:
                 print("Car at exit")

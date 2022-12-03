@@ -206,10 +206,10 @@ def h3(array,int):
 
 #input = "..I...BBI.K.GHAAKLGHDDKLG..JEEFF.J.."
 
-# input = "BBIJ....IJCC..IAAMGDDK.MGH.KL.GHFFL."
+input = "BBIJ....IJCC..IAAMGDDK.MGH.KL.GHFFL."
 # input = "...............AA..................."
-# input = "IJBBCCIJDDL.IJAAL.EEK.L...KFF..GGHH. F0 G6"
-input = "IIB...C.BHHHC.AAD.....D.EEGGGF.....F"
+#input = "IJBBCCIJDDL.IJAAL.EEK.L...KFF..GGHH. F0 G6"
+#input = "IIB...C.BHHHC.AAD.....D.EEGGGF.....F"
 
 
 
