@@ -367,6 +367,7 @@ input = "BBIJ....IJCC..IAAMGDDK.MGH.KL.GHFFL."
 
 
 
+
 # place input string in multidim array (6x6)
 input_array = parsePuzzle(input)
 printBoard(input_array)
