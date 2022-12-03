@@ -104,24 +104,17 @@ def ucs(root):
     while not queue.empty():
         # get the highest priority item
         pair = queue.get()
-        print("pair " + str(pair))
         current = pair[1][-1]
-        print("current")
-        print(current) 
+
         # if it's the goal, return
         if current.state[2][5] == 'A':
-            printBoard(pair[1])
             return pair[1]
         # add all the edges to the priority queue
         for edge in current.children:
             # create a new path with the node from the edge
-            new_path = list(pair[1].state)
-            print(pair[1])
+            new_path = list(pair[1])
             new_path.append(edge.board)
-            printBoard(edge.board.state)
             # append the new path to the queue with the edges priority
-            print(pair[0])
-            print(edge.cost)
             queue.put((pair[0] + edge.cost, new_path))
 
 def bfs(root):
@@ -171,6 +164,7 @@ def shortestPath(root):
              for children in current_node.children:
                 heapq.heappush(h, (current_cost+children.cost, children.board))
     return path
+
 # method that checks how many cars are blocking the ambulance 
 # returns a string 
 def h1(array):
@@ -192,9 +186,168 @@ def h2(array):
     return counter
 
 # method that returns the the h1 heuristics multiplied by lambda 
-def h3(array,int):
+def h3(array,int=5):
     temp = h1(array)
     return (int*temp)
+
+def greedy(root, heur):
+    # track of visited nodes
+    visited = set()  
+    # GBFS traversal result
+    greedy_traversal = list()
+    # queue
+    queue = PriorityQueue()
+
+    # push the root node to the queue and mark it as visited 
+    queue.put((0,root))
+    visited.add(root)
+
+    if ( heur == "h1"):
+        # loop until queue empty 
+        while not queue.empty(): 
+            # take the first board from the queue and add it to the traversal list
+            current_cost, current_node = queue.get()
+            greedy_traversal.append(current_node)
+
+            # update cost with heuristics 
+            current_cost = h1(current_node.state)
+
+            # if the current board is in a winning state, then return the bfs traversale
+            if current_node.state[2][5] == "A" and current_node.state[2][4] == "A" :
+                return greedy_traversal
+            # else, check the children of that node 
+            else: 
+                for children in current_node.children:
+                    # if the children node havent been visited yet
+                    # push them onto the queue and mark them as visited 
+                    if children.board not in visited:
+                        visited.add(children.board)
+                        children.setCost(h1(children.board.state))
+                        queue.put((children.cost,children.board))
+    elif (heur == "h2"):
+        # loop until queue empty 
+        while not queue.empty(): 
+            # take the first board from the queue and add it to the traversal list
+            current_cost, current_node = queue.get()
+            greedy_traversal.append(current_node)
+
+            # update cost with heuristics 
+            current_cost = h2(current_node.state)
+
+            # if the current board is in a winning state, then return the bfs traversale
+            if current_node.state[2][5] == "A" and current_node.state[2][4] == "A" :
+                return greedy_traversal
+            # else, check the children of that node 
+            else: 
+                for children in current_node.children:
+                    # if the children node havent been visited yet
+                    # push them onto the queue and mark them as visited 
+                    if children.board not in visited:
+                        visited.add(children.board)
+                        children.setCost(h2(children.board.state))
+                        queue.put((children.cost,children.board))
+    elif (heur == "h3"):
+        # loop until queue empty 
+        while not queue.empty(): 
+            # take the first board from the queue and add it to the traversal list
+            current_cost, current_node = queue.get()
+            greedy_traversal.append(current_node)
+
+            # update cost with heuristics 
+            current_cost = h3(current_node.state)
+
+            # if the current board is in a winning state, then return the bfs traversale
+            if current_node.state[2][5] == "A" and current_node.state[2][4] == "A" :
+                return greedy_traversal
+            # else, check the children of that node 
+            else: 
+                for children in current_node.children:
+                    # if the children node havent been visited yet
+                    # push them onto the queue and mark them as visited 
+                    if children.board not in visited:
+                        visited.add(children.board)
+                        children.setCost(h3(children.board.state,5))
+                        queue.put((children.cost,children.board))
+    
+    return ValueError("There is no solution")
+
+
+def astar(root, heur):
+    open = PriorityQueue()
+    closedset = set()
+    path = []
+    current = root
+
+    open.put((current, 0))
+
+    if (heur=="h1"):
+        while not open.empty(): 
+            # current_node, current_cost = min(openset, key=lambda o:o[0])
+            current_node, current_cost = open.get()
+            path.append(current_node)
+            
+            if current_node.state[2][5] == 'A' and current_node.state[2][4] == 'A':
+                path.append(current_node)
+                return path 
+            
+            # openset.remove((current_node, current_cost))
+            closedset.add(current_node)
+
+            for children in current_node.children:
+                if children.board not in closedset:
+                    g_cost = (current_cost-h1(children.parent.state)) + children.cost
+                    closedset.add(children.board)
+                    f_cost = g_cost + h1(children.board.state)
+                    open.put((children.board, f_cost))
+    
+    elif(heur == "h2"):
+        while not open.empty(): 
+            # current_node, current_cost = min(openset, key=lambda o:o[0])
+            current_node, current_cost = open.get()
+            path.append(current_node)
+            
+            if current_node.state[2][5] == 'A' and current_node.state[2][4] == 'A':
+                path.append(current_node)
+                return path 
+            
+            # openset.remove((current_node, current_cost))
+            closedset.add(current_node)
+
+            for children in current_node.children:
+                if children.board not in closedset:
+                    g_cost = (current_cost-h2(children.parent.state)) + children.cost
+                    closedset.add(children.board)
+                    f_cost = g_cost + h2(children.board.state)
+                    open.put((children.board, f_cost))
+    
+    elif(heur == "h3"):
+        while not open.empty(): 
+            # current_node, current_cost = min(openset, key=lambda o:o[0])
+            current_node, current_cost = open.get()
+            path.append(current_node)
+            
+            if current_node.state[2][5] == 'A' and current_node.state[2][4] == 'A':
+                path.append(current_node)
+                return path 
+            
+            # openset.remove((current_node, current_cost))
+            closedset.add(current_node)
+
+            for children in current_node.children:
+                if children.board not in closedset:
+                    g_cost = (current_cost-h3(children.parent.state,5)) + children.cost
+                    closedset.add(children.board)
+                    f_cost = g_cost + h3(children.board.state,5)
+                    open.put((children.board, f_cost))
+        
+    return ValueError("There is no solution")
+
+
+
+
+
+
+
 
 
 # -------------------------------------------------------------------------MAIN
@@ -204,12 +357,13 @@ def h3(array,int):
 # lets work with a string, we can establish io later
 
 
-#input = "..I...BBI.K.GHAAKLGHDDKLG..JEEFF.J.."
+# input = "..I...BBI.K.GHAAKLGHDDKLG..JEEFF.J.."
 
-# input = "BBIJ....IJCC..IAAMGDDK.MGH.KL.GHFFL."
+input = "BBIJ....IJCC..IAAMGDDK.MGH.KL.GHFFL."
 # input = "...............AA..................."
 # input = "IJBBCCIJDDL.IJAAL.EEK.L...KFF..GGHH. F0 G6"
-input = "IIB...C.BHHHC.AAD.....D.EEGGGF.....F"
+# input = "IIB...C.BHHHC.AAD.....D.EEGGGF.....F"
+# input = "BB.G.HE..G.HEAAG.I..FCCIDDF..I..F..."
 
 
 
@@ -236,20 +390,17 @@ board.createGraph()
 
 
 # TESTING SEARCH ALGOS
-# string = "IJBBCCIJDDL.IJAAL.EEK.L...KFF..GGHH. F0 G6"
 
 print("------------------")
 
-print(len(board.children))
-answer = shortestPath(board)
+answer = astar(board, "h3")  
 print(len(answer))
 
 print("--------")
 
-for i in answer: 
-    printBoard(i.state)
-    print(" ")
+# for j in answer: 
+#     printBoard(j.state)
+#     print(" ")
 
-print(h3(input_array,5))
 
 

@@ -1,1 +1,1 @@
-shortestPath
+            path.append(current_node)
