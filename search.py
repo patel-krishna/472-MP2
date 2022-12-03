@@ -123,7 +123,7 @@ class Greedy:
                         # push them onto the queue and mark them as visited 
                         if children.board not in visited:
                             visited.add(children.board)
-                            children.setCost(Heuristics.h4(children.board.state,5))
+                            children.setCost(Heuristics.h4(children.board.state))
                             queue.put((children.cost,children.board))
         
         return ValueError("There is no solution")
@@ -211,9 +211,9 @@ class ASTAR:
 
                 for children in current_node.children:
                     if children.board not in closedset:
-                        g_cost = (current_cost-Heuristics.h4(children.parent.state,5)) + children.cost
+                        g_cost = (current_cost-Heuristics.h4(children.parent.state)) + children.cost
                         closedset.add(children.board)
-                        f_cost = g_cost + Heuristics.h4(children.board.state,5)
+                        f_cost = g_cost + Heuristics.h4(children.board.state)
                         open.put((children.board, f_cost))
             
         return ValueError("There is no solution")

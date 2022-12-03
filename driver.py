@@ -188,8 +188,8 @@ def main():
     # input = "...............AA..................."
     # input = "IJBBCCIJDDL.IJAAL.EEK.L...KFF..GGHH. F0 G6"
     # input = "IIB...C.BHHHC.AAD.....D.EEGGGF.....F"
-    input = "BB.G.HE..G.HEAAG.I..FCCIDDF..I..F..."
-    # input = "JBBCCCJDD..MJAAL.MFFKL.N..KGGN.HH..."
+    # input = "BB.G.HE..G.HEAAG.I..FCCIDDF..I..F..."
+    input = "JBBCCCJDD..MJAAL.MFFKL.N..KGGN.HH..."
 
 
     # place input string in multidim array (6x6)
@@ -218,7 +218,7 @@ def main():
 
     print("------------------")
 
-    answer = ASTAR.astar(board) 
+    answer = Greedy.greedy(board, 'h4') 
     print((answer))
 
     print("------------------")
