@@ -89,9 +89,9 @@ class Gameboard(object):
                             moved = True
                             row+=1
                             count+=1
-                if not moved:
-                    print("no solution")
-                    return False
+                # if not moved:
+                #     print("no solution")
+                #     return False
         else:
             return "no solution"
         for a in self.children:

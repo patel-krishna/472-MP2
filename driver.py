@@ -363,7 +363,7 @@ input = "BBIJ....IJCC..IAAMGDDK.MGH.KL.GHFFL."
 # input = "...............AA..................."
 # input = "IJBBCCIJDDL.IJAAL.EEK.L...KFF..GGHH. F0 G6"
 # input = "IIB...C.BHHHC.AAD.....D.EEGGGF.....F"
-# input = "BB.G.HE..G.HEAAG.I..FCCIDDF..I..F..."
+#input = "BB.G.HE..G.HEAAG.I..FCCIDDF..I..F..."
 
 
 
