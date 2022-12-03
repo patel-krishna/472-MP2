@@ -2,6 +2,7 @@ from queue import PriorityQueue
 from car import Car
 from gameboard import Gameboard
 import re
+import heapq
 
 # Helper methods 
 
@@ -94,7 +95,7 @@ def createOrientationDict(cars_dict):
     return carOrientation
 
 
-# SEARCH ALGORITHMS 
+# ================SEARCH ALGORITHMS======================= 
 
 def ucs(root): 
     queue = PriorityQueue()
@@ -143,7 +144,7 @@ def bfs(root):
         bfs_traversal.append(current_node)
 
         # if the current board is in a winning state, then return the bfs traversale
-        if current_node.state[2][5] == "A":
+        if current_node.state[2][5] == "A" and current_node.state[2][4] == "A" :
             return bfs_traversal
         # else, check the children of that node 
         else: 
@@ -154,18 +155,61 @@ def bfs(root):
                     visited.add(children.board)
                     queue.append(children.board)
 
+# Dijkstra's algorithm 
+def shortestPath(root):
+    h = []
+
+    heapq.heappush(h, (0, root))
+    path = []
+    path.append(root)
+    while len(h) !=0:
+        current_cost, current_node = heapq.heappop(h)
+        path.append(current_node)
+        if current_node.state[2][5] == "A" and current_node.state[2][4] == "A":
+             return path
+        else:
+             for children in current_node.children:
+                heapq.heappush(h, (current_cost+children.cost, children.board))
+    return path
+# method that checks how many cars are blocking the ambulance 
+# returns a string 
+def h1(array):
+    counter = 0
+    setCars= set()
+    for i in range(2,6):
+        if array[2][i] != "A":
+            if array[2][i] not in setCars:
+                setCars.add(array[2][i])
+                counter=+1
+    return counter
+
+# method that checks for blocked positions aka h2
+def h2(array):
+    counter = 0
+    for i in range(2,6):
+        if array[2][i] != 'A' and array[2][i] != ".":
+            counter=+1
+    return counter
+
+# method that returns the the h1 heuristics multiplied by lambda 
+def h3(array,int):
+    temp = h1(array)
+    return (int*temp)
+
 
 # -------------------------------------------------------------------------MAIN
+
 
 # Read input string, for now, 
 # lets work with a string, we can establish io later
 
 
 #input = "..I...BBI.K.GHAAKLGHDDKLG..JEEFF.J.."
-#input = "BBIJ....IJCC..IAAMGDDK.MGH.KL.GHFFL."
-#input = "...............AA..................."
-input = "..............AABB.................."
-#input = "IJBBCCIJDDL.IJAAL.EEK.L...KFF..GGHH. F0 G6"
+
+# input = "BBIJ....IJCC..IAAMGDDK.MGH.KL.GHFFL."
+# input = "...............AA..................."
+# input = "IJBBCCIJDDL.IJAAL.EEK.L...KFF..GGHH. F0 G6"
+input = "IIB...C.BHHHC.AAD.....D.EEGGGF.....F"
 
 
 
@@ -186,7 +230,6 @@ print(carOrientation)
 
 board = Gameboard(carFuel,carOrientation,input_array)
 board.createGraph()
-print(len(board.children))
 # for k in range(len(cars_list)):
 #     print(cars_list[k])
 
@@ -197,7 +240,8 @@ print(len(board.children))
 
 print("------------------")
 
-answer = bfs(board)
+print(len(board.children))
+answer = shortestPath(board)
 print(len(answer))
 
 print("--------")
@@ -205,5 +249,7 @@ print("--------")
 for i in answer: 
     printBoard(i.state)
     print(" ")
+
+print(h3(input_array,5))
 
 

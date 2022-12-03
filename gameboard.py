@@ -238,6 +238,24 @@ class Gameboard(object):
         child = Child(self, newBoard, cost)
         self.children.append(child)
 
+    def __lt__(self,other):
+        """
+        Perform the less than operation (self < other).
+        
+        Args:
+            other: the other Node to compare to
+        """
+        return (self.state < other.state)
+
+    def __gt__(self,other):
+        """
+        Perform the greater than operation (self > other).
+        
+        Args:
+            other: the other Node to compare to
+        """
+        return (self.state > other.state)
+
 
 class Child(object):
 
