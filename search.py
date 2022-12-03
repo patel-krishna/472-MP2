@@ -143,7 +143,6 @@ class ASTAR:
             while not open.empty(): 
                 # current_node, current_cost = min(openset, key=lambda o:o[0])
                 current_node, current_cost = open.get()
-                print("queue size"+str(open.qsize()))
                 path.append(current_node)
                 
                 if current_node.state[2][5] == 'A' and current_node.state[2][4] == 'A':

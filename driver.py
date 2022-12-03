@@ -218,7 +218,7 @@ def main():
 
     print("------------------")
 
-    answer = testucs(board) 
+    answer = ASTAR.astar(board) 
     print((answer))
 
     print("------------------")
