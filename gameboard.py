@@ -281,3 +281,6 @@ class Child(object):
         self.parent = parent
         self.board = board
         self.cost = cost
+    
+    def setCost(self, int):
+        self.cost = int
