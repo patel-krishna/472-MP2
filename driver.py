@@ -182,6 +182,8 @@ def blockingCars(array):
                 counter=+1
     return counter
 
+# 
+
 
 # -------------------------------------------------------------------------MAIN
 
