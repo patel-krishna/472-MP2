@@ -104,24 +104,17 @@ def ucs(root):
     while not queue.empty():
         # get the highest priority item
         pair = queue.get()
-        print("pair " + str(pair))
         current = pair[1][-1]
-        print("current")
-        print(current) 
+
         # if it's the goal, return
         if current.state[2][5] == 'A':
-            printBoard(pair[1])
             return pair[1]
         # add all the edges to the priority queue
         for edge in current.children:
             # create a new path with the node from the edge
-            new_path = list(pair[1].state)
-            print(pair[1])
+            new_path = list(pair[1])
             new_path.append(edge.board)
-            printBoard(edge.board.state)
             # append the new path to the queue with the edges priority
-            print(pair[0])
-            print(edge.cost)
             queue.put((pair[0] + edge.cost, new_path))
 
 def bfs(root):
@@ -171,6 +164,7 @@ def shortestPath(root):
              for children in current_node.children:
                 heapq.heappush(h, (current_cost+children.cost, children.board))
     return path
+
 # method that checks how many cars are blocking the ambulance 
 # returns a string 
 def h1(array):
@@ -196,6 +190,44 @@ def h3(array,int):
     temp = h1(array)
     return (int*temp)
 
+def greedy(root):
+    # track of visited nodes
+    visited = set()  
+    # GBFS traversal result
+    greedy_traversal = list()
+    # queue
+    queue = PriorityQueue()
+
+    # push the root node to the queue and mark it as visited 
+    queue.put((0,root))
+    visited.add(root)
+
+    # loop until queue empty 
+    while not queue.empty(): 
+        # take the first board from the queue and add it to the traversal list
+        current_cost, current_node = queue.get()
+        greedy_traversal.append(current_node)
+
+        # if the current board is in a winning state, then return the bfs traversale
+        if current_node.state[2][5] == "A" and current_node.state[2][4] == "A" :
+            return greedy_traversal
+        # else, check the children of that node 
+        else: 
+            for children in current_node.children:
+                # if the children node havent been visited yet
+                # push them onto the queue and mark them as visited 
+                if children.board not in visited:
+                    visited.add(children.board)
+                    queue.put((current_cost+children.cost,children.board))
+    
+    return None
+
+def astar(root):
+    
+
+
+
+
 
 # -------------------------------------------------------------------------MAIN
 
@@ -206,9 +238,9 @@ def h3(array,int):
 
 #input = "..I...BBI.K.GHAAKLGHDDKLG..JEEFF.J.."
 # input = "BBIJ....IJCC..IAAMGDDK.MGH.KL.GHFFL."
-# input = "...............AA..................."
+input = "...............AA..................."
 # input = "IJBBCCIJDDL.IJAAL.EEK.L...KFF..GGHH. F0 G6"
-input = "IIB...C.BHHHC.AAD.....D.EEGGGF.....F"
+# input = "IIB...C.BHHHC.AAD.....D.EEGGGF.....F"
 
 
 # place input string in multidim array (6x6)
@@ -239,14 +271,14 @@ board.createGraph()
 print("------------------")
 
 print(len(board.children))
-answer = shortestPath(board)
+answer = greedy(board)
 print(len(answer))
 
 print("--------")
 
-for i in answer: 
-    printBoard(i.state)
-    print(" ")
+# for i in answer: 
+#     printBoard(i.state)
+#     print(" ")
 
 print(h3(input_array,5))
 
