@@ -1,1 +1,2 @@
-            path.append(current_node)
+
+            # openset.remove((current_node, current_cost))
