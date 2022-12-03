@@ -118,6 +118,7 @@ def testucs(root):
             new_path.append(edge.board)
             # append the new path to the queue with the edges priority
             queue.put((pair[0] + edge.cost, new_path))
+    return None
 
 def testbfs(root):
 
@@ -217,7 +218,7 @@ def main():
 
     print("------------------")
 
-    answer = UCS.shortestPath(board) 
+    answer = testucs(board) 
     print((answer))
 
     print("------------------")

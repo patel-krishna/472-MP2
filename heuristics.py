@@ -21,7 +21,15 @@ class Heuristics:
 
     # method that returns the the h1 heuristics multiplied by lambda 
     def h3(array,int=5):
-        temp = h1(array)
+        temp = Heuristics.h1(array)
         return (int*temp)
 
-# TODO: heuristic 4
+# TODO: heuristic 4: how many elements are in the last column, if last column is empty h4(n) = 0
+    def h4(array):
+        counter = 0
+        for i in range (0, 6):
+            if array[5][i] != 'A':
+                counter +=1
+        return counter 
+
+
