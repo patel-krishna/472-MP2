@@ -1,3 +1,1 @@
-for j in answer: 
-#     printBoard(j.state)
-#     print(" ")
+            path.append(current_node)

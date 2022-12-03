@@ -186,11 +186,11 @@ def h2(array):
     return counter
 
 # method that returns the the h1 heuristics multiplied by lambda 
-def h3(array,int):
+def h3(array,int=5):
     temp = h1(array)
     return (int*temp)
 
-def greedy(root):
+def greedy(root, heur):
     # track of visited nodes
     visited = set()  
     # GBFS traversal result
@@ -202,32 +202,77 @@ def greedy(root):
     queue.put((0,root))
     visited.add(root)
 
-    # loop until queue empty 
-    while not queue.empty(): 
-        # take the first board from the queue and add it to the traversal list
-        current_cost, current_node = queue.get()
-        greedy_traversal.append(current_node)
+    if ( heur == "h1"):
+        # loop until queue empty 
+        while not queue.empty(): 
+            # take the first board from the queue and add it to the traversal list
+            current_cost, current_node = queue.get()
+            greedy_traversal.append(current_node)
 
-        # update cost with heuristics 
-        current_cost = h2(current_node.state)
+            # update cost with heuristics 
+            current_cost = h1(current_node.state)
 
-        # if the current board is in a winning state, then return the bfs traversale
-        if current_node.state[2][5] == "A" and current_node.state[2][4] == "A" :
-            return greedy_traversal
-        # else, check the children of that node 
-        else: 
-            for children in current_node.children:
-                # if the children node havent been visited yet
-                # push them onto the queue and mark them as visited 
-                if children.board not in visited:
-                    visited.add(children.board)
-                    children.setCost(h2(children.board.state))
-                    queue.put((children.cost,children.board))
+            # if the current board is in a winning state, then return the bfs traversale
+            if current_node.state[2][5] == "A" and current_node.state[2][4] == "A" :
+                return greedy_traversal
+            # else, check the children of that node 
+            else: 
+                for children in current_node.children:
+                    # if the children node havent been visited yet
+                    # push them onto the queue and mark them as visited 
+                    if children.board not in visited:
+                        visited.add(children.board)
+                        children.setCost(h1(children.board.state))
+                        queue.put((children.cost,children.board))
+    elif (heur == "h2"):
+        # loop until queue empty 
+        while not queue.empty(): 
+            # take the first board from the queue and add it to the traversal list
+            current_cost, current_node = queue.get()
+            greedy_traversal.append(current_node)
+
+            # update cost with heuristics 
+            current_cost = h2(current_node.state)
+
+            # if the current board is in a winning state, then return the bfs traversale
+            if current_node.state[2][5] == "A" and current_node.state[2][4] == "A" :
+                return greedy_traversal
+            # else, check the children of that node 
+            else: 
+                for children in current_node.children:
+                    # if the children node havent been visited yet
+                    # push them onto the queue and mark them as visited 
+                    if children.board not in visited:
+                        visited.add(children.board)
+                        children.setCost(h2(children.board.state))
+                        queue.put((children.cost,children.board))
+    elif (heur == "h3"):
+        # loop until queue empty 
+        while not queue.empty(): 
+            # take the first board from the queue and add it to the traversal list
+            current_cost, current_node = queue.get()
+            greedy_traversal.append(current_node)
+
+            # update cost with heuristics 
+            current_cost = h3(current_node.state)
+
+            # if the current board is in a winning state, then return the bfs traversale
+            if current_node.state[2][5] == "A" and current_node.state[2][4] == "A" :
+                return greedy_traversal
+            # else, check the children of that node 
+            else: 
+                for children in current_node.children:
+                    # if the children node havent been visited yet
+                    # push them onto the queue and mark them as visited 
+                    if children.board not in visited:
+                        visited.add(children.board)
+                        children.setCost(h3(children.board.state,5))
+                        queue.put((children.cost,children.board))
     
-    return None
+    return ValueError("There is no solution")
 
 
-def astar(root):
+def astar(root, heur):
     open = PriorityQueue()
     closedset = set()
     path = []
@@ -235,27 +280,67 @@ def astar(root):
 
     open.put((current, 0))
 
-    while not open.empty(): 
-        # current_node, current_cost = min(openset, key=lambda o:o[0])
-        current_node, current_cost = open.get()
-        path.append(current_node)
-        
-        if current_node.state[2][5] == 'A' and current_node.state[2][4] == 'A':
+    if (heur=="h1"):
+        while not open.empty(): 
+            # current_node, current_cost = min(openset, key=lambda o:o[0])
+            current_node, current_cost = open.get()
             path.append(current_node)
-            return path 
+            
+            if current_node.state[2][5] == 'A' and current_node.state[2][4] == 'A':
+                path.append(current_node)
+                return path 
+            
+            # openset.remove((current_node, current_cost))
+            closedset.add(current_node)
+
+            for children in current_node.children:
+                if children.board not in closedset:
+                    g_cost = (current_cost-h1(children.parent.state)) + children.cost
+                    closedset.add(children.board)
+                    f_cost = g_cost + h1(children.board.state)
+                    open.put((children.board, f_cost))
+    
+    elif(heur == "h2"):
+        while not open.empty(): 
+            # current_node, current_cost = min(openset, key=lambda o:o[0])
+            current_node, current_cost = open.get()
+            path.append(current_node)
+            
+            if current_node.state[2][5] == 'A' and current_node.state[2][4] == 'A':
+                path.append(current_node)
+                return path 
+            
+            # openset.remove((current_node, current_cost))
+            closedset.add(current_node)
+
+            for children in current_node.children:
+                if children.board not in closedset:
+                    g_cost = (current_cost-h2(children.parent.state)) + children.cost
+                    closedset.add(children.board)
+                    f_cost = g_cost + h2(children.board.state)
+                    open.put((children.board, f_cost))
+    
+    elif(heur == "h3"):
+        while not open.empty(): 
+            # current_node, current_cost = min(openset, key=lambda o:o[0])
+            current_node, current_cost = open.get()
+            path.append(current_node)
+            
+            if current_node.state[2][5] == 'A' and current_node.state[2][4] == 'A':
+                path.append(current_node)
+                return path 
+            
+            # openset.remove((current_node, current_cost))
+            closedset.add(current_node)
+
+            for children in current_node.children:
+                if children.board not in closedset:
+                    g_cost = (current_cost-h3(children.parent.state,5)) + children.cost
+                    closedset.add(children.board)
+                    f_cost = g_cost + h3(children.board.state,5)
+                    open.put((children.board, f_cost))
         
-        # openset.remove((current_node, current_cost))
-        closedset.add(current_node)
-
-        for children in current_node.children:
-            if children.board not in closedset:
-                g_cost = (current_cost-h2(children.parent.state)) + children.cost
-                print(children.cost)
-                closedset.add(children.board)
-                f_cost = g_cost + h2(children.board.state)
-                print(f_cost)
-                open.put((children.board, f_cost))
-
+    return ValueError("There is no solution")
 
 
 
@@ -278,6 +363,7 @@ input = "BBIJ....IJCC..IAAMGDDK.MGH.KL.GHFFL."
 # input = "...............AA..................."
 # input = "IJBBCCIJDDL.IJAAL.EEK.L...KFF..GGHH. F0 G6"
 # input = "IIB...C.BHHHC.AAD.....D.EEGGGF.....F"
+# input = "BB.G.HE..G.HEAAG.I..FCCIDDF..I..F..."
 
 
 
@@ -307,8 +393,7 @@ board.createGraph()
 
 print("------------------")
 
-print(len(board.children))
-answer = astar(board)
+answer = astar(board, "h3")  
 print(len(answer))
 
 print("--------")
