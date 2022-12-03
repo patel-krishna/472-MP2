@@ -103,6 +103,28 @@ class Greedy:
                             visited.add(children.board)
                             children.setCost(Heuristics.h3(children.board.state,5))
                             queue.put((children.cost,children.board))
+        elif (heur == "h4"):
+            # loop until queue empty 
+            while not queue.empty(): 
+                # take the first board from the queue and add it to the traversal list
+                current_cost, current_node = queue.get()
+                greedy_traversal.append(current_node)
+
+                # update cost with heuristics 
+                current_cost = Heuristics.h4(current_node.state)
+
+                # if the current board is in a winning state, then return the bfs traversale
+                if current_node.state[2][5] == "A" and current_node.state[2][4] == "A" :
+                    return greedy_traversal
+                # else, check the children of that node 
+                else: 
+                    for children in current_node.children:
+                        # if the children node havent been visited yet
+                        # push them onto the queue and mark them as visited 
+                        if children.board not in visited:
+                            visited.add(children.board)
+                            children.setCost(Heuristics.h4(children.board.state,5))
+                            queue.put((children.cost,children.board))
         
         return ValueError("There is no solution")
 
@@ -174,6 +196,25 @@ class ASTAR:
                         g_cost = (current_cost-Heuristics.h3(children.parent.state,5)) + children.cost
                         closedset.add(children.board)
                         f_cost = g_cost + Heuristics.h3(children.board.state,5)
+                        open.put((children.board, f_cost))
+        elif(heur == "h4"):
+            while not open.empty(): 
+                # current_node, current_cost = min(openset, key=lambda o:o[0])
+                current_node, current_cost = open.get()
+                path.append(current_node)
+                
+                if current_node.state[2][5] == 'A' and current_node.state[2][4] == 'A':
+                    path.append(current_node)
+                    return path 
+                
+                # openset.remove((current_node, current_cost))
+                closedset.add(current_node)
+
+                for children in current_node.children:
+                    if children.board not in closedset:
+                        g_cost = (current_cost-Heuristics.h4(children.parent.state,5)) + children.cost
+                        closedset.add(children.board)
+                        f_cost = g_cost + Heuristics.h4(children.board.state,5)
                         open.put((children.board, f_cost))
             
         return ValueError("There is no solution")
