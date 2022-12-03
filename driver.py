@@ -161,6 +161,7 @@ def shortestPath(root):
 
     heapq.heappush(h, (0, root))
     path = []
+    path.append(root)
     while len(h) !=0:
         current_cost, current_node = heapq.heappop(h)
         path.append(current_node)
@@ -169,20 +170,31 @@ def shortestPath(root):
         else:
              for children in current_node.children:
                 heapq.heappush(h, (current_cost+children.cost, children.board))
-
+    return path
 # method that checks how many cars are blocking the ambulance 
 # returns a string 
-def blockingCars(array):
+def h1(array):
     counter = 0
     setCars= set()
-    for i in range(3,6):
+    for i in range(2,6):
         if array[2][i] != "A":
             if array[2][i] not in setCars:
                 setCars.add(array[2][i])
                 counter=+1
     return counter
 
-# 
+# method that checks for blocked positions aka h2
+def h2(array):
+    counter = 0
+    for i in range(2,6):
+        if array[2][i] != 'A' and array[2][i] != ".":
+            counter=+1
+    return counter
+
+# method that returns the the h1 heuristics multiplied by lambda 
+def h3(array,int):
+    temp = h1(array)
+    return (int*temp)
 
 
 # -------------------------------------------------------------------------MAIN
@@ -193,9 +205,10 @@ def blockingCars(array):
 
 
 #input = "..I...BBI.K.GHAAKLGHDDKLG..JEEFF.J.."
-input = "BBIJ....IJCC..IAAMGDDK.MGH.KL.GHFFL."
+# input = "BBIJ....IJCC..IAAMGDDK.MGH.KL.GHFFL."
 # input = "...............AA..................."
 # input = "IJBBCCIJDDL.IJAAL.EEK.L...KFF..GGHH. F0 G6"
+input = "IIB...C.BHHHC.AAD.....D.EEGGGF.....F"
 
 
 # place input string in multidim array (6x6)
@@ -235,6 +248,6 @@ for i in answer:
     printBoard(i.state)
     print(" ")
 
-print(blockingCars(input_array))
+print(h3(input_array,5))
 
 
