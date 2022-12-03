@@ -98,8 +98,6 @@ class Gameboard(object):
             win = a.board.createGraph()
             if win:
                 return True
-            if not win:
-                return False
 
     def carAtExit(self,coords):
         for c in coords:
