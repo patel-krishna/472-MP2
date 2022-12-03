@@ -170,6 +170,18 @@ def shortestPath(root):
              for children in current_node.children:
                 heapq.heappush(h, (current_cost+children.cost, children.board))
 
+# method that checks how many cars are blocking the ambulance 
+# returns a string 
+def blockingCars(array):
+    counter = 0
+    setCars= set()
+    for i in range(3,6):
+        if array[2][i] != "A":
+            if array[2][i] not in setCars:
+                setCars.add(array[2][i])
+                counter=+1
+    return counter
+
 
 # -------------------------------------------------------------------------MAIN
 
@@ -179,8 +191,8 @@ def shortestPath(root):
 
 
 #input = "..I...BBI.K.GHAAKLGHDDKLG..JEEFF.J.."
-# input = "BBIJ....IJCC..IAAMGDDK.MGH.KL.GHFFL."
-input = "...............AA..................."
+input = "BBIJ....IJCC..IAAMGDDK.MGH.KL.GHFFL."
+# input = "...............AA..................."
 # input = "IJBBCCIJDDL.IJAAL.EEK.L...KFF..GGHH. F0 G6"
 
 
@@ -220,5 +232,7 @@ print("--------")
 for i in answer: 
     printBoard(i.state)
     print(" ")
+
+print(blockingCars(input_array))
 
 
