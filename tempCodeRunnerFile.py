@@ -1,3 +1,3 @@
-for i in answer: 
-#     printBoard(i.state)
+for j in answer: 
+#     printBoard(j.state)
 #     print(" ")

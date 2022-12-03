@@ -208,6 +208,9 @@ def greedy(root):
         current_cost, current_node = queue.get()
         greedy_traversal.append(current_node)
 
+        # update cost with heuristics 
+        current_cost = h2(current_node.state)
+
         # if the current board is in a winning state, then return the bfs traversale
         if current_node.state[2][5] == "A" and current_node.state[2][4] == "A" :
             return greedy_traversal
@@ -218,12 +221,45 @@ def greedy(root):
                 # push them onto the queue and mark them as visited 
                 if children.board not in visited:
                     visited.add(children.board)
-                    queue.put((current_cost+children.cost,children.board))
+                    children.setCost(h2(children.board.state))
+                    queue.put((children.cost,children.board))
     
     return None
 
+
 def astar(root):
-    
+    open = PriorityQueue()
+    closedset = set()
+    path = []
+    current = root
+
+    open.put((current, 0))
+
+    while not open.empty(): 
+        # current_node, current_cost = min(openset, key=lambda o:o[0])
+        current_node, current_cost = open.get()
+        path.append(current_node)
+        
+        if current_node.state[2][5] == 'A' and current_node.state[2][4] == 'A':
+            path.append(current_node)
+            return path 
+        
+        # openset.remove((current_node, current_cost))
+        closedset.add(current_node)
+
+        for children in current_node.children:
+            if children.board not in closedset:
+                g_cost = (current_cost-h2(children.parent.state)) + children.cost
+                print(children.cost)
+                closedset.add(children.board)
+                f_cost = g_cost + h2(children.board.state)
+                print(f_cost)
+                open.put((children.board, f_cost))
+
+
+
+
+
 
 
 
@@ -236,10 +272,10 @@ def astar(root):
 # lets work with a string, we can establish io later
 
 
-#input = "..I...BBI.K.GHAAKLGHDDKLG..JEEFF.J.."
+# input = "..I...BBI.K.GHAAKLGHDDKLG..JEEFF.J.."
 
-# input = "BBIJ....IJCC..IAAMGDDK.MGH.KL.GHFFL."
-input = "...............AA..................."
+input = "BBIJ....IJCC..IAAMGDDK.MGH.KL.GHFFL."
+# input = "...............AA..................."
 # input = "IJBBCCIJDDL.IJAAL.EEK.L...KFF..GGHH. F0 G6"
 # input = "IIB...C.BHHHC.AAD.....D.EEGGGF.....F"
 
@@ -268,20 +304,18 @@ board.createGraph()
 
 
 # TESTING SEARCH ALGOS
-# string = "IJBBCCIJDDL.IJAAL.EEK.L...KFF..GGHH. F0 G6"
 
 print("------------------")
 
 print(len(board.children))
-answer = greedy(board)
+answer = astar(board)
 print(len(answer))
 
 print("--------")
 
-# for i in answer: 
-#     printBoard(i.state)
+# for j in answer: 
+#     printBoard(j.state)
 #     print(" ")
 
-print(h3(input_array,5))
 
 
