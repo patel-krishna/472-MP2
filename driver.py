@@ -5,6 +5,7 @@ import re
 import heapq
 from heuristics import Heuristics
 from search import UCS, Greedy, ASTAR
+from pathlib import Path
 
 # ========================HELPER METHODS========================= 
 
@@ -191,7 +192,8 @@ def main():
     # input = "IIB...C.BHHHC.AAD.....D.EEGGGF.....F"
     # input = "BB.G.HE..G.HEAAG.I..FCCIDDF..I..F..."
     # input = "JBBCCCJDD..MJAAL.MFFKL.N..KGGN.HH..."
-    filename = '/Users/rosiers/Downloads/50_puzzles.txt'
+    p = Path("__file__").with_name('50_puzzles.txt')
+    filename = p.absolute()
     input = []
     with open(filename) as file:
         while (line := file.readline().rstrip()):
