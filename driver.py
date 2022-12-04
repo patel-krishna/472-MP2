@@ -5,7 +5,6 @@ import re
 import heapq
 from heuristics import Heuristics
 from search import UCS, Greedy, ASTAR
-from pathlib import Path
 
 # ========================HELPER METHODS========================= 
 
@@ -192,12 +191,13 @@ def main():
     # input = "IIB...C.BHHHC.AAD.....D.EEGGGF.....F"
     # input = "BB.G.HE..G.HEAAG.I..FCCIDDF..I..F..."
     # input = "JBBCCCJDD..MJAAL.MFFKL.N..KGGN.HH..."
-    p = Path("__file__").with_name('50_puzzles.txt')
-    filename = p.absolute()
+    filename = 'C:\\Users\\Krish\\.vscode\\472-MP2\\Input\\50_puzzles.txt'
     input = []
+    puzzlenum = []
     with open(filename) as file:
         while (line := file.readline().rstrip()):
             if line[0]=="#":
+                puzzlenum.append(line[1])
                 continue
             else:
                 input.append(line)
@@ -221,8 +221,7 @@ def main():
 
         board = Gameboard(carFuel,carOrientation,input_array)
         board.createGraph()
-        # for k in range(len(cars_list)):
-        #     print(cars_list[k])
+       
 
 
 
