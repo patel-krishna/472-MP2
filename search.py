@@ -31,7 +31,10 @@ class UCS:
             else:
                     for children in current_node.children:
                         heapq.heappush(h, (current_cost+children.cost, children.board))
-        return ucs_path, ucs_values
+
+        
+        return ValueError("There is no solution")
+
 
 # ============GREEDY
 
@@ -40,6 +43,7 @@ class Greedy:
     # The greedy algorithm is an algorithm that will find a search path
     # depending on the heuristic of each node in the following layer
     # it chooses the lowest value heuristic through a priority queue
+    # f(n) = h(n)
     # the algorithm takes in the root node and a heuristic string input
     # if no heurisitic choice is given, it will by default run h1
 
@@ -154,12 +158,20 @@ class Greedy:
         return ValueError("There is no solution")
 
 
+# =============A/A*
+
 class ASTAR:
-    # algorithm for astar, takes h1 as default heuristics 
+
+    # astar algorithm takes in the root node of a graph and a heuristic input value 
+    # if no heuristic string is given, it will by default run on heuristic of h1
+    # the algorithm uses a priosity queue to choose the best node to traverse depending on the fn cost 
+    # f(n) = g(n) + h(n)
+    
     def astar(root, heur="h1"):
         open = PriorityQueue()
         closedset = set()
-        path = []
+        astar_path = list()
+        astar_values = list()
         current = root
 
         open.put((current, 0))
@@ -168,10 +180,14 @@ class ASTAR:
             while not open.empty(): 
                 # current_node, current_cost = min(openset, key=lambda o:o[0])
                 current_node, current_cost = open.get()
-                path.append(current_node)
+                astar_path.append(current_node)
+                fn = current_cost
+                hn = Heuristics.h1(current_node.state)
+                gn = fn-hn 
+                astar_values.append((fn, hn, gn))
                 
                 if current_node.state[2][5] == 'A' and current_node.state[2][4] == 'A':
-                    return path 
+                    return astar_path, astar_values
                 
                 # openset.remove((current_node, current_cost))
                 closedset.add(current_node)
@@ -186,11 +202,15 @@ class ASTAR:
             while not open.empty(): 
                 # current_node, current_cost = min(openset, key=lambda o:o[0])
                 current_node, current_cost = open.get()
-                path.append(current_node)
+                astar_path.append(current_node)
+                fn = current_cost
+                hn = Heuristics.h2(current_node.state)
+                gn = fn-hn 
+                astar_values.append((fn, hn, gn))
                 
                 if current_node.state[2][5] == 'A' and current_node.state[2][4] == 'A':
-                    path.append(current_node)
-                    return path 
+                    # astar_path.append(current_node)
+                    return astar_path, astar_values 
                 
                 # openset.remove((current_node, current_cost))
                 closedset.add(current_node)
@@ -206,11 +226,15 @@ class ASTAR:
             while not open.empty(): 
                 # current_node, current_cost = min(openset, key=lambda o:o[0])
                 current_node, current_cost = open.get()
-                path.append(current_node)
+                astar_path.append(current_node)
+                fn = current_cost
+                hn = Heuristics.h3(current_node.state)
+                gn = fn-hn 
+                astar_values.append((fn, hn, gn))
                 
                 if current_node.state[2][5] == 'A' and current_node.state[2][4] == 'A':
-                    path.append(current_node)
-                    return path 
+                    # astar_path.append(current_node)
+                    return astar_path, astar_values
                 
                 # openset.remove((current_node, current_cost))
                 closedset.add(current_node)
@@ -225,11 +249,15 @@ class ASTAR:
             while not open.empty(): 
                 # current_node, current_cost = min(openset, key=lambda o:o[0])
                 current_node, current_cost = open.get()
-                path.append(current_node)
+                astar_path.append(current_node)
+                fn = current_cost
+                hn = Heuristics.h4(current_node.state)
+                gn = fn-hn 
+                astar_values.append((fn, hn, gn))
                 
                 if current_node.state[2][5] == 'A' and current_node.state[2][4] == 'A':
-                    path.append(current_node)
-                    return path 
+                    # astar_path.append(current_node)
+                    return astar_path, astar_values
                 
                 # openset.remove((current_node, current_cost))
                 closedset.add(current_node)
