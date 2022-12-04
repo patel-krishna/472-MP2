@@ -65,7 +65,7 @@ class IO:
                 temp = 0
                 for h in heuristicsGREEDY:
                     f.write(str(h) + " ")
-                    f.write(str(answerUCS[temp].state))
+                    f.write(str(answerGREEDY[temp].state))
                     f.write(" " + (str(board.currentFuel[temp])))
                     f.write("\n\n")
                     temp += 1
@@ -104,3 +104,20 @@ class IO:
                     f.write("\n\n")
                     temp += 1
                 f.close()
+
+    def writeCSV(input_array ,board, puzzlenum):
+        with open('C:\\Users\\Krish\\.vscode\\472-MP2\\Output\\spreadsheet.csv', 'a') as fd:
+            answerUCS, heuristicsUCS = UCS.shortestPath(board)
+            fd.write(str(puzzlenum) +","+"UCS"+","+"NA,"+str(len(board.children))+","+str(len(answerUCS))+str(totalTime)+"\n")
+            heu = ["h1", "h2", "h3", "h4"]
+            for i in heu:
+               answerGREEDY, heuristicsGREEDY = Greedy.greedy(board, i) 
+               fd.write(str(puzzlenum) +","+"GBFS,"+i+","+str(len(board.children))+","+str(len(answerGREEDY))+str(totalTime)+"\n")
+            for i in heu:
+                answerASTAR, heuristicsASTAR = ASTAR.astar(board, i)
+                fd.write(str(puzzlenum) +","+"A/A*,"+i+","+str(len(board.children))+","+str(len(answerASTAR))+str(totalTime)+"\n")
+
+                
+
+
+        
