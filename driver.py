@@ -191,44 +191,52 @@ def main():
     # input = "IIB...C.BHHHC.AAD.....D.EEGGGF.....F"
     # input = "BB.G.HE..G.HEAAG.I..FCCIDDF..I..F..."
     # input = "JBBCCCJDD..MJAAL.MFFKL.N..KGGN.HH..."
-    input = '.....BGGG..B.F.AAB.F.H..EF.H..EDDCCC'
-    print(len(input))
+    filename = '/Users/rosiers/Downloads/50_puzzles.txt'
+    input = []
+    with open(filename) as file:
+        while (line := file.readline().rstrip()):
+            if line[0]=="#":
+                continue
+            else:
+                input.append(line)
+    #print(len(input))
 
     # place input string in multidim array (6x6)
-    input_array = parsePuzzle(input)
-    printBoard(input_array)
+    for puzzle in input:
+        input_array = parsePuzzle(puzzle)
+        printBoard(input_array)
 
 
-    # read the array and create car objects, setting them up in a list
-    cars_dict = createCars(input_array)
+        # read the array and create car objects, setting them up in a list
+        cars_dict = createCars(input_array)
 
-    # create dictionnaries for root board
-    carFuel = createFuelDict(input)
-    carOrientation =createOrientationDict(cars_dict)
-    print(carFuel)
-    print(carOrientation)
-
-
-    board = Gameboard(carFuel,carOrientation,input_array)
-    board.createGraph()
-    # for k in range(len(cars_list)):
-    #     print(cars_list[k])
+        # create dictionnaries for root board
+        carFuel = createFuelDict(puzzle)
+        carOrientation =createOrientationDict(cars_dict)
+        print(carFuel)
+        print(carOrientation)
 
 
+        board = Gameboard(carFuel,carOrientation,input_array)
+        board.createGraph()
+        # for k in range(len(cars_list)):
+        #     print(cars_list[k])
 
-    # TESTING SEARCH ALGOS
 
-    print("------------------")
 
-    answer1, answer2 = ASTAR.astar(board, 'h4') 
-    print((answer1))
-    print(answer2)
+        # TESTING SEARCH ALGOS
 
-    print("------------------")
+        print("------------------")
 
-    # for j in answer1: 
-    #     printBoard(j.state)
-    #     print(" ")
+        answer1, answer2 = ASTAR.astar(board, 'h4')
+        print((answer1))
+        print(answer2)
+
+        print("------------------")
+
+        # for j in answer1:
+        #     printBoard(j.state)
+        #     print(" ")
 
 if __name__=="__main__":
     main()
