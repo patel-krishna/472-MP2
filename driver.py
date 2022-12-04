@@ -226,9 +226,9 @@ def main():
 
     print("------------------")
 
-    for j in answer1: 
-        printBoard(j.state)
-        print(" ")
+    # for j in answer1: 
+    #     printBoard(j.state)
+    #     print(" ")
 
 if __name__=="__main__":
     main()

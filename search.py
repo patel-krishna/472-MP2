@@ -184,7 +184,10 @@ class ASTAR:
                 fn = current_cost
                 hn = Heuristics.h1(current_node.state)
                 gn = fn-hn 
-                astar_values.append((fn, gn, hn))
+                if(gn<0):
+                    astar_values.append((fn, 0, hn))
+                else:
+                    astar_values.append((fn, gn, hn))
                 
                 if current_node.state[2][5] == 'A' and current_node.state[2][4] == 'A':
                     return astar_path, astar_values
@@ -206,7 +209,10 @@ class ASTAR:
                 fn = current_cost
                 hn = Heuristics.h2(current_node.state)
                 gn = fn-hn 
-                astar_values.append((fn, gn, hn))
+                if(gn<0):
+                    astar_values.append((fn, 0, hn))
+                else:
+                    astar_values.append((fn, gn, hn))
                 
                 if current_node.state[2][5] == 'A' and current_node.state[2][4] == 'A':
                     # astar_path.append(current_node)
@@ -230,7 +236,10 @@ class ASTAR:
                 fn = current_cost
                 hn = Heuristics.h3(current_node.state)
                 gn = fn-hn 
-                astar_values.append((fn, gn, hn))
+                if(gn<0):
+                    astar_values.append((fn, 0, hn))
+                else:
+                    astar_values.append((fn, gn, hn))
                 
                 if current_node.state[2][5] == 'A' and current_node.state[2][4] == 'A':
                     # astar_path.append(current_node)
@@ -253,7 +262,10 @@ class ASTAR:
                 fn = current_cost
                 hn = Heuristics.h4(current_node.state)
                 gn = fn-hn 
-                astar_values.append((fn, gn, hn))
+                if(gn<0):
+                    astar_values.append((fn, 0, hn))
+                else:
+                    astar_values.append((fn, gn, hn))
                 
                 if current_node.state[2][5] == 'A' and current_node.state[2][4] == 'A':
                     # astar_path.append(current_node)
