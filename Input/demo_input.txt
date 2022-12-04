@@ -1,15 +1,11 @@
 #
 # Demo
 #
-
-# demo 1.1
+#1
 IBJJ.EIBHHHE.B.AA..CC..G.KDD.G.K.LL.
-
-# demo 1.2
+#2
 EEE..CF.HH.CF.AA..GGG..D.II.BDJJJ.BD B5 G9 
-
-# demo 1.3
+#3
 C.E..DC.E..DCAA..DFFFH...GGHB.II.HB. 
-
-# demo 1.4
+#4
 .II..FHHH..FBBAA...C...GJC.D.GJ..D.G

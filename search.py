@@ -1,5 +1,6 @@
 
 from queue import PriorityQueue
+import time
 from car import Car
 from gameboard import Gameboard
 import re
@@ -7,6 +8,8 @@ import heapq
 from heuristics import Heuristics
 
 #============UCS
+
+totalTime = 0
 
 class UCS: 
 
@@ -20,6 +23,8 @@ class UCS:
         heapq.heappush(h, (0, root))
         ucs_path = []
         ucs_values = []
+  
+        t0 = time.perf_counter()
 
         ucs_path.append(root)
         while len(h) !=0:
@@ -27,13 +32,18 @@ class UCS:
             ucs_path.append(current_node)
             ucs_values.append((current_cost, current_cost, 0))
             if current_node.state[2][5] == "A" and current_node.state[2][4] == "A":
+                t1 = time.perf_counter()
+                totalTime = str(t1-t0)
                 return ucs_path, ucs_values 
             else:
                     for children in current_node.children:
                         heapq.heappush(h, (current_cost+children.cost, children.board))
 
+        t1 = time.perf_counter()
+        totalTime = str(t1-t0)
         
         return ValueError("There is no solution")
+        
 
 
 # ============GREEDY
@@ -56,10 +66,12 @@ class Greedy:
         queue = PriorityQueue()
         # heuristics for traversal path 
         greedy_values = list()
+        global totalTime
 
         # push the root node to the queue and mark it as visited 
         queue.put((0,root))
         visited.add(root)
+        t0 = time.perf_counter()
 
         if ( heur == "h1"):
             # loop until queue empty 
@@ -74,6 +86,8 @@ class Greedy:
 
                 # if the current board is in a winning state, then return the bfs traversale
                 if current_node.state[2][5] == "A" and current_node.state[2][4] == "A" :
+                    t1 = time.perf_counter()
+                    totalTime = str(t1-t0)
                     return greedy_traversal, greedy_values
                 # else, check the children of that node 
                 else: 
@@ -97,6 +111,8 @@ class Greedy:
 
                 # if the current board is in a winning state, then return the bfs traversale
                 if current_node.state[2][5] == "A" and current_node.state[2][4] == "A" :
+                    t1 = time.perf_counter()
+                    totalTime = str(t1-t0)
                     return greedy_traversal, greedy_values
                 # else, check the children of that node 
                 else: 
@@ -121,6 +137,8 @@ class Greedy:
 
                 # if the current board is in a winning state, then return the bfs traversale
                 if current_node.state[2][5] == "A" and current_node.state[2][4] == "A" :
+                    t1 = time.perf_counter()
+                    totalTime = str(t1-t0)
                     return greedy_traversal, greedy_values
                 # else, check the children of that node 
                 else: 
@@ -144,6 +162,8 @@ class Greedy:
 
                 # if the current board is in a winning state, then return the bfs traversale
                 if current_node.state[2][5] == "A" and current_node.state[2][4] == "A" :
+                    t1 = time.perf_counter()
+                    totalTime = str(t1-t0)
                     return greedy_traversal, greedy_values
                 # else, check the children of that node 
                 else: 
@@ -155,6 +175,8 @@ class Greedy:
                             # children.setCost(Heuristics.h4(children.board.state))
                             queue.put((Heuristics.h4(children.board.state),children.board))
         
+        t1 = time.perf_counter()
+        totalTime = str(t1-t0)
         return ValueError("There is no solution")
 
 
@@ -173,8 +195,10 @@ class ASTAR:
         astar_path = list()
         astar_values = list()
         current = root
+        global totalTime
 
         open.put((current, 0))
+        t0 = time.perf_counter()    
 
         if (heur=="h1"):
             while not open.empty(): 
@@ -190,6 +214,8 @@ class ASTAR:
                     astar_values.append((fn, gn, hn))
                 
                 if current_node.state[2][5] == 'A' and current_node.state[2][4] == 'A':
+                    t1 = time.perf_counter()
+                    totalTime = str(t1-t0)
                     return astar_path, astar_values
                 
                 # openset.remove((current_node, current_cost))
@@ -216,6 +242,8 @@ class ASTAR:
                 
                 if current_node.state[2][5] == 'A' and current_node.state[2][4] == 'A':
                     # astar_path.append(current_node)
+                    t1 = time.perf_counter()
+                    totalTime = str(t1-t0)
                     return astar_path, astar_values 
                 
                 # openset.remove((current_node, current_cost))
@@ -243,6 +271,8 @@ class ASTAR:
                 
                 if current_node.state[2][5] == 'A' and current_node.state[2][4] == 'A':
                     # astar_path.append(current_node)
+                    t1 = time.perf_counter()
+                    totalTime = str(t1-t0)
                     return astar_path, astar_values
                 
                 # openset.remove((current_node, current_cost))
@@ -269,6 +299,8 @@ class ASTAR:
                 
                 if current_node.state[2][5] == 'A' and current_node.state[2][4] == 'A':
                     # astar_path.append(current_node)
+                    t1 = time.perf_counter()
+                    totalTime = str(t1-t0)
                     return astar_path, astar_values
                 
                 # openset.remove((current_node, current_cost))
@@ -280,5 +312,7 @@ class ASTAR:
                         closedset.add(children.board)
                         f_cost = g_cost + Heuristics.h4(children.board.state)
                         open.put((children.board, f_cost))
-            
+        
+        t1 = time.perf_counter()
+        totalTime = str(t1-t0)    
         return ValueError("There is no solution")

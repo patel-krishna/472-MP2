@@ -4,7 +4,8 @@ from gameboard import Gameboard
 import re
 import heapq
 from heuristics import Heuristics
-from search import UCS, Greedy, ASTAR
+from search import *
+from IO import *
 
 # ========================HELPER METHODS========================= 
 
@@ -194,21 +195,66 @@ def main():
 
     # TODO: CREATE METHOD TO READ 50 PUZZLES AND WRITE TO CSV
 
-        fiftyfile = 'C:\\Users\\Krish\\.vscode\\472-MP2\\Input\\50_puzzles.txt'
-        input = []
+        # fiftyfile = 'C:\\Users\\Krish\\.vscode\\472-MP2\\Input\\50_puzzles.txt'
+        # input = []
+        # puzzlenum = []
+        # with open(fiftyfile) as file:
+        #     while (line := file.readline().rstrip()):
+        #         if line[0]=="#":
+        #             puzzlenum.append(line[1])
+        #             continue
+        #         else:
+        #             input.append(line)
+
+        # # place input string in multidim array (6x6)
+        # for puzzle in input:
+        #     number = input.index(puzzle)
+        #     input_array = parsePuzzle(puzzle)
+        #     printBoard(input_array)
+
+
+        #     # read the array and create car objects, setting them up in a list
+        #     cars_dict = createCars(input_array)
+
+        #     # create dictionnaries for root board
+        #     carFuel = createFuelDict(puzzle)
+        #     carOrientation =createOrientationDict(cars_dict)
+        #     print(carFuel)
+        #     print(carOrientation)
+
+
+
+        #     board = Gameboard(carFuel,carOrientation,input_array)
+        #     board.createGraph()
+
+
+
+
+
+
+
+
+    # TODO: CREATE METHOD TO READ DEMO FILES AND CREATE SEARCH/SOLUTION FILES
+
+        demofile = "C:\\Users\\Krish\\.vscode\\472-MP2\\Input\\demo_input.txt"
+        demoOutput= "C:\\Users\\Krish\\.vscode\\472-MP2\\Output"
+
+        demoinput = []
         puzzlenum = []
-        with open(fiftyfile) as file:
+        with open(demofile) as file:
             while (line := file.readline().rstrip()):
+                print(line)
                 if line[0]=="#":
-                    puzzlenum.append(line[1])
+                    # puzzlenum.append(line[1])
                     continue
                 else:
-                    input.append(line)
+                    demoinput.append(line)
 
-        # place input string in multidim array (6x6)
-        for puzzle in input:
+
+        for puzzle in demoinput:
             input_array = parsePuzzle(puzzle)
             printBoard(input_array)
+            number = demoinput.index(puzzle)
 
 
             # read the array and create car objects, setting them up in a list
@@ -224,30 +270,9 @@ def main():
             board = Gameboard(carFuel,carOrientation,input_array)
             board.createGraph()
 
+            IO.writeSolSearch(input_array,board,number,carFuel,demoOutput)
 
 
-
-
-
-    # TODO: CREATE METHOD TO READ DEMO FILES AND CREATE SEARCH/SOLUTION FILES
-
-        demofile = "C:\\Users\\Krish\\.vscode\\472-MP2\\Input\\demo_input.txt"
-
-
-
-        # TESTING SEARCH ALGOS
-
-        print("------------------")
-
-        answer1, answer2 = ASTAR.astar(board, 'h4')
-        print((answer1))
-        print(answer2)
-
-        print("------------------")
-
-        # for j in answer1:
-        #     printBoard(j.state)
-        #     print(" ")
 
 if __name__=="__main__":
     main()
