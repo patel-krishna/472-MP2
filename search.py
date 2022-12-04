@@ -57,8 +57,8 @@ class Greedy:
                         # push them onto the queue and mark them as visited 
                         if children.board not in visited:
                             visited.add(children.board)
-                            children.setCost(Heuristics.h1(children.board.state))
-                            queue.put((children.cost,children.board))
+                            # children.setCost(Heuristics.h1(children.board.state))
+                            queue.put((Heuristics.h1(children.board.state),children.board))
         elif (heur == "h2"):
             # loop until queue empty 
             while not queue.empty(): 
@@ -79,8 +79,8 @@ class Greedy:
                         # push them onto the queue and mark them as visited 
                         if children.board not in visited:
                             visited.add(children.board)
-                            children.setCost(Heuristics.h2(children.board.state))
-                            queue.put((children.cost,children.board))
+                            # children.setCost(Heuristics.h2(children.board.state))
+                            queue.put((Heuristics.h2(children.board.state),children.board))
         elif (heur == "h3"):
             # loop until queue empty 
             while not queue.empty(): 
@@ -101,8 +101,8 @@ class Greedy:
                         # push them onto the queue and mark them as visited 
                         if children.board not in visited:
                             visited.add(children.board)
-                            children.setCost(Heuristics.h3(children.board.state,5))
-                            queue.put((children.cost,children.board))
+                            # children.setCost(Heuristics.h3(children.board.state,5))
+                            queue.put((Heuristics.h3(children.board.state,5),children.board))
         elif (heur == "h4"):
             # loop until queue empty 
             while not queue.empty(): 
@@ -123,8 +123,8 @@ class Greedy:
                         # push them onto the queue and mark them as visited 
                         if children.board not in visited:
                             visited.add(children.board)
-                            children.setCost(Heuristics.h4(children.board.state))
-                            queue.put((children.cost,children.board))
+                            # children.setCost(Heuristics.h4(children.board.state))
+                            queue.put((Heuristics.h4(children.board.state),children.board))
         
         return ValueError("There is no solution")
 

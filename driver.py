@@ -184,12 +184,12 @@ def testgreedy(root):
 
 def main():
     # input = "..I...BBI.K.GHAAKLGHDDKLG..JEEFF.J.."
-    # input = "BBIJ....IJCC..IAAMGDDK.MGH.KL.GHFFL."
+    input = "BBIJ....IJCC..IAAMGDDK.MGH.KL.GHFFL."
     # input = "...............AA..................."
     # input = "IJBBCCIJDDL.IJAAL.EEK.L...KFF..GGHH. F0 G6"
     # input = "IIB...C.BHHHC.AAD.....D.EEGGGF.....F"
     # input = "BB.G.HE..G.HEAAG.I..FCCIDDF..I..F..."
-    input = "JBBCCCJDD..MJAAL.MFFKL.N..KGGN.HH..."
+    # input = "JBBCCCJDD..MJAAL.MFFKL.N..KGGN.HH..."
 
 
     # place input string in multidim array (6x6)
@@ -223,9 +223,9 @@ def main():
 
     print("------------------")
 
-    # for j in answer: 
-    #     printBoard(j.state)
-    #     print(" ")
+    for j in answer: 
+        printBoard(j.state)
+        print(" ")
 
 if __name__=="__main__":
     main()
