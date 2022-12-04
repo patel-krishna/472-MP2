@@ -59,12 +59,13 @@ def createCars(array):
         for j in range(6):
             if array[i][j] != ".":
                 if len(cars_dict) ==0:
-                    if array[i][j+1] == array[i][j]:
-                        temp_obj=Car(array[i][j],(i,j),100, "h")
-                        cars_dict.update({array[i][j]: temp_obj})
-                    else:
-                        temp_obj=Car(array[i][j],(i,j),100, "v")
-                        cars_dict.update({array[i][j]: temp_obj})
+                    if(1+j in range(6)):
+                        if array[i][j+1] == array[i][j]:
+                            temp_obj=Car(array[i][j],(i,j),100, "h")
+                            cars_dict.update({array[i][j]: temp_obj})
+                        else:
+                            temp_obj=Car(array[i][j],(i,j),100, "v")
+                            cars_dict.update({array[i][j]: temp_obj})
                 else:
                     if array[i][j] in cars_dict:
                           x=cars_dict.get(array[i][j])
@@ -219,12 +220,13 @@ def main():
 
     print("------------------")
 
-    answer = Greedy.greedy(board, 'h4') 
-    print((answer))
+    answer1, answer2 = ASTAR.astar(board, 'h4') 
+    print((answer1))
+    print(answer2)
 
     print("------------------")
 
-    for j in answer: 
+    for j in answer1: 
         printBoard(j.state)
         print(" ")
 
