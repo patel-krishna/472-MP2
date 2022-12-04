@@ -191,37 +191,47 @@ def main():
     # input = "IIB...C.BHHHC.AAD.....D.EEGGGF.....F"
     # input = "BB.G.HE..G.HEAAG.I..FCCIDDF..I..F..."
     # input = "JBBCCCJDD..MJAAL.MFFKL.N..KGGN.HH..."
-    filename = 'C:\\Users\\Krish\\.vscode\\472-MP2\\Input\\50_puzzles.txt'
-    input = []
-    puzzlenum = []
-    with open(filename) as file:
-        while (line := file.readline().rstrip()):
-            if line[0]=="#":
-                puzzlenum.append(line[1])
-                continue
-            else:
-                input.append(line)
-    #print(len(input))
 
-    # place input string in multidim array (6x6)
-    for puzzle in input:
-        input_array = parsePuzzle(puzzle)
-        printBoard(input_array)
+    # TODO: CREATE METHOD TO READ 50 PUZZLES AND WRITE TO CSV
 
+        fiftyfile = 'C:\\Users\\Krish\\.vscode\\472-MP2\\Input\\50_puzzles.txt'
+        input = []
+        puzzlenum = []
+        with open(fiftyfile) as file:
+            while (line := file.readline().rstrip()):
+                if line[0]=="#":
+                    puzzlenum.append(line[1])
+                    continue
+                else:
+                    input.append(line)
 
-        # read the array and create car objects, setting them up in a list
-        cars_dict = createCars(input_array)
-
-        # create dictionnaries for root board
-        carFuel = createFuelDict(puzzle)
-        carOrientation =createOrientationDict(cars_dict)
-        print(carFuel)
-        print(carOrientation)
+        # place input string in multidim array (6x6)
+        for puzzle in input:
+            input_array = parsePuzzle(puzzle)
+            printBoard(input_array)
 
 
-        board = Gameboard(carFuel,carOrientation,input_array)
-        board.createGraph()
-       
+            # read the array and create car objects, setting them up in a list
+            cars_dict = createCars(input_array)
+
+            # create dictionnaries for root board
+            carFuel = createFuelDict(puzzle)
+            carOrientation =createOrientationDict(cars_dict)
+            print(carFuel)
+            print(carOrientation)
+
+
+            board = Gameboard(carFuel,carOrientation,input_array)
+            board.createGraph()
+
+
+
+
+
+
+    # TODO: CREATE METHOD TO READ DEMO FILES AND CREATE SEARCH/SOLUTION FILES
+
+        demofile = "C:\\Users\\Krish\\.vscode\\472-MP2\\Input\\demo_input.txt"
 
 
 
