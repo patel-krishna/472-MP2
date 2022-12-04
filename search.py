@@ -121,7 +121,7 @@ class Greedy:
 
                 # if the current board is in a winning state, then return the bfs traversale
                 if current_node.state[2][5] == "A" and current_node.state[2][4] == "A" :
-                    greedy_traversal, greedy_values
+                    return greedy_traversal, greedy_values
                 # else, check the children of that node 
                 else: 
                     for children in current_node.children:
