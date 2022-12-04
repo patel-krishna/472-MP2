@@ -31,8 +31,10 @@ class UCS:
             else:
                     for children in current_node.children:
                         heapq.heappush(h, (current_cost+children.cost, children.board))
+
         
         return ValueError("There is no solution")
+
 
 # ============GREEDY
 
